@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="700sp"
+    android:theme="@style/AppTheme">
+
+    <TextView
+        android:id="@+id/textViewPlayingSong"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:background="@color/colorSquashie"
+        android:ellipsize="marquee"
+        android:fontFamily="@font/roboto_mono"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="@string/welcome"
+        android:textAlignment="center"
+        android:textColor="@color/colorText"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="433dp"
+        android:layout_height="395dp"
+        android:layout_marginStart="424dp"
+        android:src="@drawable/squash_land_logo"
+        app:layout_constraintBottom_toTopOf="@+id/buttonRequestNewSong"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewPlayingSong" />
+
+    <Button
+        android:id="@+id/buttonChooseASong"
+        android:layout_width="231dp"
+        android:layout_height="47dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="468dp"
+        android:layout_marginBottom="73dp"
+        android:background="@drawable/shadow_button"
+        android:fontFamily="@font/roboto_mono"
+        android:paddingRight="3dp"
+        android:paddingBottom="5dp"
+        android:text="Choose A Song"
+        android:textColor="@color/colorText"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonRequestNewSong"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView" />
+
+    <Button
+        android:id="@+id/buttonRequestNewSong"
+        android:layout_width="231dp"
+        android:layout_height="47dp"
+        android:background="@drawable/shadow_button"
+        android:fontFamily="@font/roboto_mono"
+        android:paddingRight="3dp"
+        android:paddingBottom="5dp"
+        android:text="Request New Song"
+        android:textColor="@color/colorText"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonChooseASong"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+</androidx.constraintlayout.widget.ConstraintLayout>

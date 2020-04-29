@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#2B2D42</color>
+    <color name="colorText">#FFFFFC</color>
+    <color name="colorTextBackGround">#E61937</color>
+    <color name="colorSquashie">#E61937</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="colorWhite">#FFFFFC</color>
+    <color name="colorAlert">#FF7F11</color>
+    <color name="colorGreenBackground">#CBE896</color>
+    <color name="colorRecyclerViewItemBackground">#BEB7A4</color>
+    <color name="colorBlue">#0093E0</color>
+    <color name="colorYellow">#FFB900</color>
+</resources>

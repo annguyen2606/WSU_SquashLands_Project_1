@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="700sp">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewRequest"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="26dp"
+        android:layout_marginBottom="23dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tableLayout"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="46dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="41dp"
+        android:background="@drawable/shadow_button"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSubmitRequest"
+        app:layout_constraintEnd_toStartOf="@+id/recyclerViewRequest"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="5sp">
+
+            <EditText
+                android:id="@+id/editTextRequestSongName"
+                android:layout_width="602dp"
+                android:layout_height="match_parent"
+                android:ems="10"
+                android:hint="Name of the song"
+                android:inputType="textPersonName"
+                android:fontFamily="@font/roboto_mono"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="5sp">
+
+            <EditText
+                android:id="@+id/editTextRequestFirstName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Your first name"
+                android:inputType="textPersonName"
+                android:fontFamily="@font/roboto_mono"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="5sp">
+
+            <EditText
+                android:id="@+id/editTextRequestLastName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Your last name"
+                android:inputType="textPersonName"
+                android:fontFamily="@font/roboto_mono"/>
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="15sp">
+
+            <EditText
+                android:id="@+id/editTextRequestEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="Your email e.g. example@gmail.com"
+                android:inputType="textEmailAddress"
+                android:fontFamily="@font/roboto_mono"/>
+        </TableRow>
+    </TableLayout>
+
+    <Button
+        android:id="@+id/buttonSubmitRequest"
+        android:layout_width="213dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="46dp"
+        android:layout_marginBottom="371dp"
+        android:background="@drawable/back_button"
+        android:text="Send the request"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout"
+        android:fontFamily="@font/roboto_mono"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,2 @@
+rootProject.name='Squash Lands WSU Project'
+include ':app'
