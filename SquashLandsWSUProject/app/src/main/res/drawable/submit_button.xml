@@ -11,7 +11,7 @@
     <!-- White foreground. -->
     <item android:bottom="5dp" android:right="3dp">
         <shape>
-            <solid android:color="@color/colorPrimaryDark" />
+            <solid android:color="@color/colorBlue" />
             <corners android:radius="20sp"/>
         </shape>
     </item>
