@@ -5,7 +5,9 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.animation.LinearInterpolator
 import android.widget.Button
@@ -17,6 +19,12 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
+    var currentSongTmp = ""
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        if(MainActivity.currentSong.isNotEmpty())
+            this.view?.findViewById<TextView>(R.id.textViewPlayingSong)?.text = MainActivity.currentSong
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         var rotation = AnimationUtils.loadAnimation(view.context,R.anim.rotate)
         rotation.interpolator = LinearInterpolator()
@@ -36,15 +44,19 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 dialogInterface.cancel()
             }
         )
-
+        MainActivity.socket.on("respond to sync",{
+            this.activity?.runOnUiThread({
+                if(currentSongTmp != MainActivity.currentSong) {
+                    textViewPlayingSong.text = MainActivity.currentSong
+                    currentSongTmp = MainActivity.currentSong
+                }
+            })
+        })
         MainActivity.socket.once("respond to sync",{
             rotation.fillAfter = true
             logo.startAnimation(rotation)
-            this.activity?.runOnUiThread({
-                textViewPlayingSong.text = MainActivity.currentSong
-            })
-            MainActivity.socket.emit("request request list")
         })
+
         if(!MainActivity.socket.connected())
             alertDialogNotConnected.show()
         buttonRequestASong.setOnClickListener {

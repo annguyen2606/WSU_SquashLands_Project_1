@@ -21,8 +21,8 @@ class CustomQueueRecyclerView (var songs: ArrayList<Song>, var context: Context)
             val textViewSongItemDuration = itemView.findViewById<TextView>(R.id.songItemQueueDuration)
             val textViewSongIndex = itemView.findViewById<TextView>(R.id.songItemQueueIndex)
             val tv = itemView.findViewById<TextView>(R.id.songItemQueueStatus)
-            var minute = song.duration.toInt() / 60
-            var second = song.duration.toInt() % 60
+            val minute = song.duration.toInt() / 60
+            val second = song.duration.toInt() % 60
 
             if (second == 0)
                 textViewSongItemDuration.text = minute.toString() + ":00"

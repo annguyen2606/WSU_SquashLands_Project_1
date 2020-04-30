@@ -12,7 +12,7 @@ class CustomRequestRecyclerViewAdapter (var request: ArrayList<Request>, var con
         fun bindItems(request: Request){
             val textViewRequestSongName = itemView.findViewById<TextView>(R.id.textViewRequestSongName)
             val textViewRequestName = itemView.findViewById<TextView>(R.id.textViewRequestName)
-            textViewRequestName.text = "Request by : " + request.patronName
+            textViewRequestName.text = "Requested by : " + request.patronName
             textViewRequestSongName.text = request.songName
         }
     }

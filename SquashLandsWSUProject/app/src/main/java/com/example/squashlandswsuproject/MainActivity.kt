@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.RecyclerView
 import com.beust.klaxon.JsonReader
 import com.beust.klaxon.Klaxon
 import io.socket.client.IO
@@ -21,11 +22,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         textViewAnnouncement.setSelected(true);
 
         socket.once("connect",{
             socket.emit("sync library and queue", "request to get library and queue")
+            socket.emit("request request list")
         })
 
         socket.on("respond to sync with library and queue",{
@@ -48,12 +49,20 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
-
+        val fTransaction = supportFragmentManager.beginTransaction()
         socket.on("respond to sync", {
             currentSong = it[0].toString()
             if (queue.size > 0){
                 if (queue[0].name != currentSong) {
                     queue.removeAt(0)
+                    val fragmentChooseASongFragment = supportFragmentManager.findFragmentByTag("fragment_choose_a_song")
+                    if(fragmentChooseASongFragment != null && fragmentChooseASongFragment.isVisible){
+                        val adapterTmp = CustomQueueRecyclerView(queue,fragmentChooseASongFragment.context!!)
+                        val recyclerView = fragmentChooseASongFragment.view?.findViewById<RecyclerView>(R.id.recyclerViewQueue)
+                        this.runOnUiThread({
+                            recyclerView?.adapter = adapterTmp
+                        })
+                    }
                 }
             }
         })
@@ -65,14 +74,13 @@ class MainActivity : AppCompatActivity() {
                 it.beginArray {
                     while (it.hasNext()){
                         val song = Klaxon().parse<Song>(it) as Song
-                        if(song.uri.contains("/Music%20Videos/"))
-                            queue.add(song)
+                        queue.add(song)
                     }
                 }
             }
         })
 
-        socket.on("respons to request request list",{
+        socket.on("respond request request list",{
             JsonReader(StringReader(it[0].toString())).use {
                 it.beginArray {
                     while(it.hasNext()){
@@ -83,8 +91,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
-        var homeFragment = HomeFragment()
-        var fTransaction = supportFragmentManager.beginTransaction()
+        val homeFragment = HomeFragment()
         fTransaction.replace(R.id.fragment_holder, homeFragment, "fragment_home")
         fTransaction.commit()
     }
