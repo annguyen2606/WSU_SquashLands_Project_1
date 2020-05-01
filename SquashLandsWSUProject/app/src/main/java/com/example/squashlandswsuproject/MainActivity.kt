@@ -48,7 +48,9 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
             }
+            queueSize = (tmp[2].toString()).toInt()
         })
+
         val fTransaction = supportFragmentManager.beginTransaction()
         socket.on("respond to sync", {
             currentSong = it[0].toString()
@@ -67,6 +69,22 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        socket.on("web remove song from queue",{
+            var uriTmp = it[0].toString()
+            val removedSong = queue.find { it.uri == uriTmp }
+            if(removedSong != null){
+                queue.remove(removedSong)
+            }
+            val fragmentChooseASongFragment = supportFragmentManager.findFragmentByTag("fragment_choose_a_song")
+            if(fragmentChooseASongFragment != null && fragmentChooseASongFragment.isVisible){
+                val adapterTmp = CustomQueueRecyclerView(queue,fragmentChooseASongFragment.context!!)
+                val recyclerView = fragmentChooseASongFragment.view?.findViewById<RecyclerView>(R.id.recyclerViewQueue)
+                this.runOnUiThread({
+                    recyclerView?.adapter = adapterTmp
+                })
+            }
+        })
+
         socket.on("sync for repopulated queue",{
             var tmp = it[0] as JSONArray
             queue.removeAll(queue)
@@ -77,6 +95,14 @@ class MainActivity : AppCompatActivity() {
                         queue.add(song)
                     }
                 }
+            }
+            val fragmentChooseASongFragment = supportFragmentManager.findFragmentByTag("fragment_choose_a_song")
+            if(fragmentChooseASongFragment != null && fragmentChooseASongFragment.isVisible){
+                val adapterTmp = CustomQueueRecyclerView(queue,fragmentChooseASongFragment.context!!)
+                val recyclerView = fragmentChooseASongFragment.view?.findViewById<RecyclerView>(R.id.recyclerViewQueue)
+                this.runOnUiThread({
+                    recyclerView?.adapter = adapterTmp
+                })
             }
         })
 
@@ -91,6 +117,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         })
+
         val homeFragment = HomeFragment()
         fTransaction.replace(R.id.fragment_holder, homeFragment, "fragment_home")
         fTransaction.commit()
@@ -102,6 +129,7 @@ class MainActivity : AppCompatActivity() {
         var queue =  arrayListOf<Song>()
         var library = arrayListOf<Song>()
         var request = arrayListOf<Request>()
+        var queueSize = 0
     }
 
 }

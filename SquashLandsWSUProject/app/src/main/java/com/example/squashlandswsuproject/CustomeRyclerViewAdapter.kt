@@ -9,7 +9,7 @@ import android.widget.Filterable
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class CustomeRyclerViewAdapter(var songs: ArrayList<Song>, var context: Context, val clickListener: (Song) -> Unit): RecyclerView.Adapter<CustomeRyclerViewAdapter.ViewHolder>(), Filterable {
+class CustomRecyclerViewAdapter(var songs: ArrayList<Song>, var context: Context, val clickListener: (Song) -> Unit): RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder>(), Filterable {
     private var songsNotFiltered : ArrayList<Song> = ArrayList(songs)
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindItems(song: Song, clickListener: (Song) -> Unit) {

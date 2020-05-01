@@ -2,6 +2,7 @@ package com.example.squashlandswsuproject
 
 import android.content.DialogInterface
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -9,10 +10,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.beust.klaxon.Klaxon
+import org.json.JSONObject
+import kotlin.coroutines.coroutineContext
+import kotlin.reflect.jvm.internal.impl.descriptors.annotations.BuiltInAnnotationDescriptor
 
 
 class ChooseASongFragment : Fragment(R.layout.fragment_choose_a_song){
@@ -23,12 +29,12 @@ class ChooseASongFragment : Fragment(R.layout.fragment_choose_a_song){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         val libTmp: ArrayList<Song> = ArrayList(MainActivity.library)
-        var queueTmp = ArrayList(MainActivity.queue)
+        val queueTmp = ArrayList(MainActivity.queue)
         val recyclerViewQueue = view.findViewById<RecyclerView>(R.id.recyclerViewQueue)
         val recyclerViewLib = view.findViewById<RecyclerView>(R.id.recyclerView)
         val buttonBack = view.findViewById<Button>(R.id.buttonChooseASongBack)
 
-        var adapter = CustomeRyclerViewAdapter(libTmp,view.context,{song -> onSongClick(song)})
+        val adapter = CustomRecyclerViewAdapter(libTmp,view.context,{song -> onSongClick(song)})
         recyclerViewLib.adapter = adapter
         recyclerViewLib.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
 
@@ -36,7 +42,7 @@ class ChooseASongFragment : Fragment(R.layout.fragment_choose_a_song){
         recyclerViewQueue.adapter = queueAdapter
         recyclerViewQueue.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
 
-        var searchView = view.findViewById<SearchView>(R.id.searchView)
+        val searchView = view.findViewById<SearchView>(R.id.searchView)
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(p0: String?): Boolean {
@@ -64,11 +70,24 @@ class ChooseASongFragment : Fragment(R.layout.fragment_choose_a_song){
         alertDialogNotConnected.setTitle("I want to play " + song.name + "!")
         alertDialogNotConnected.setMessage("Are you sure?")
         alertDialogNotConnected.setNegativeButton("No",
-            DialogInterface.OnClickListener { dialogInterface, i ->
+            DialogInterface.OnClickListener { dialogInterface, _ ->
                 dialogInterface.dismiss()
             })
-        alertDialogNotConnected.setPositiveButton("Yes", DialogInterface.OnClickListener { dialogInterface, i->
-            dialogInterface.cancel()
+        alertDialogNotConnected.setPositiveButton("Yes", DialogInterface.OnClickListener { dialogInterface, _->
+            if(MainActivity.queue.size >= MainActivity.queueSize){
+                Toast.makeText(this.context,"Queue is full! There should be only ${MainActivity.queueSize} songs in queue",Toast.LENGTH_LONG).show()
+            }else if(MainActivity.queue.size < MainActivity.queueSize && MainActivity.queue.find{ it.uri == song.uri} == null) {
+                song.id = (MainActivity.queue.get(MainActivity.queue.lastIndex).id + 1)
+                val recyclerViewQueue = this.view?.findViewById<RecyclerView>(R.id.recyclerViewQueue)
+                val queueTmp = MainActivity.queue
+                queueTmp.add(song)
+                val adapterTmp = CustomQueueRecyclerView(queueTmp, this.context!!)
+                recyclerViewQueue?.adapter = adapterTmp
+                val jsonString = Klaxon().toJsonString(song)
+                MainActivity.socket.emit("add song to queue from tablet", jsonString )
+            }else if(MainActivity.queue.size < MainActivity.queueSize && MainActivity.queue.find{ it.uri == song.uri} != null){
+                Toast.makeText(this.context,"The song \"${song.name}\" already exists in the queue",Toast.LENGTH_LONG).show()
+            }
         })
         alertDialogNotConnected.show()
     }
