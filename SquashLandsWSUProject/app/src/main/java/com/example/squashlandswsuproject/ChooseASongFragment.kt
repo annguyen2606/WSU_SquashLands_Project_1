@@ -38,7 +38,7 @@ class ChooseASongFragment : Fragment(R.layout.fragment_choose_a_song){
         recyclerViewLib.adapter = adapter
         recyclerViewLib.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
 
-        val queueAdapter = CustomQueueRecyclerView(queueTmp,view.context)
+        val queueAdapter = CustomQueueRecyclerViewAdapter(queueTmp,view.context)
         recyclerViewQueue.adapter = queueAdapter
         recyclerViewQueue.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
 
@@ -81,7 +81,7 @@ class ChooseASongFragment : Fragment(R.layout.fragment_choose_a_song){
                 val recyclerViewQueue = this.view?.findViewById<RecyclerView>(R.id.recyclerViewQueue)
                 val queueTmp = MainActivity.queue
                 queueTmp.add(song)
-                val adapterTmp = CustomQueueRecyclerView(queueTmp, this.context!!)
+                val adapterTmp = CustomQueueRecyclerViewAdapter(queueTmp, this.context!!)
                 recyclerViewQueue?.adapter = adapterTmp
                 val jsonString = Klaxon().toJsonString(song)
                 MainActivity.socket.emit("add song to queue from tablet", jsonString )

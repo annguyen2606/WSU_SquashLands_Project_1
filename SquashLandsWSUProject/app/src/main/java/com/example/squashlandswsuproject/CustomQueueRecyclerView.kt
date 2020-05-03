@@ -13,7 +13,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.row_queue.view.*
 
-class CustomQueueRecyclerView (var songs: ArrayList<Song>, var context: Context): RecyclerView.Adapter<CustomQueueRecyclerView.ViewHolder>(){
+class CustomQueueRecyclerViewAdapter (var songs: ArrayList<Song>, var context: Context): RecyclerView.Adapter<CustomQueueRecyclerViewAdapter.ViewHolder>(){
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindItems(song: Song, position: Int) {

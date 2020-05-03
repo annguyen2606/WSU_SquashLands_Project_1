@@ -15,8 +15,8 @@ class CustomRecyclerViewAdapter(var songs: ArrayList<Song>, var context: Context
         fun bindItems(song: Song, clickListener: (Song) -> Unit) {
             val textViewSongItemName = itemView.findViewById<TextView>(R.id.songItemName)
             val textViewSongItemDuration = itemView.findViewById<TextView>(R.id.songItemDuration)
-            var minute = song.duration.toInt() / 60
-            var second = song.duration.toInt() % 60
+            val minute = song.duration.toInt() / 60
+            val second = song.duration.toInt() % 60
 
             if (second == 0)
                 textViewSongItemDuration.text = minute.toString() + ":00"
@@ -55,13 +55,13 @@ class CustomRecyclerViewAdapter(var songs: ArrayList<Song>, var context: Context
             if (p0 == null || p0.length ==0){
                 filteredSong.addAll(songsNotFiltered)
             }else{
-                var strQueryPattern = p0.toString().toLowerCase().trim()
+                val strQueryPattern = p0.toString().toLowerCase().trim()
                 songsNotFiltered.forEach {
                     if (it.name.toLowerCase().contains(strQueryPattern))
                         filteredSong.add(it)
                 }
             }
-            var filterResults = FilterResults()
+            val filterResults = FilterResults()
             filterResults.values = filteredSong
             return filterResults
         }

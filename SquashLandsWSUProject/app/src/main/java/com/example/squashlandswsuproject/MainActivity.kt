@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
                     queue.removeAt(0)
                     val fragmentChooseASongFragment = supportFragmentManager.findFragmentByTag("fragment_choose_a_song")
                     if(fragmentChooseASongFragment != null && fragmentChooseASongFragment.isVisible){
-                        val adapterTmp = CustomQueueRecyclerView(queue,fragmentChooseASongFragment.context!!)
+                        val adapterTmp = CustomQueueRecyclerViewAdapter(queue,fragmentChooseASongFragment.context!!)
                         val recyclerView = fragmentChooseASongFragment.view?.findViewById<RecyclerView>(R.id.recyclerViewQueue)
                         this.runOnUiThread({
                             recyclerView?.adapter = adapterTmp
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
             }
             val fragmentChooseASongFragment = supportFragmentManager.findFragmentByTag("fragment_choose_a_song")
             if(fragmentChooseASongFragment != null && fragmentChooseASongFragment.isVisible){
-                val adapterTmp = CustomQueueRecyclerView(queue,fragmentChooseASongFragment.context!!)
+                val adapterTmp = CustomQueueRecyclerViewAdapter(queue,fragmentChooseASongFragment.context!!)
                 val recyclerView = fragmentChooseASongFragment.view?.findViewById<RecyclerView>(R.id.recyclerViewQueue)
                 this.runOnUiThread({
                     recyclerView?.adapter = adapterTmp
@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
             }
             val fragmentChooseASongFragment = supportFragmentManager.findFragmentByTag("fragment_choose_a_song")
             if(fragmentChooseASongFragment != null && fragmentChooseASongFragment.isVisible){
-                val adapterTmp = CustomQueueRecyclerView(queue,fragmentChooseASongFragment.context!!)
+                val adapterTmp = CustomQueueRecyclerViewAdapter(queue,fragmentChooseASongFragment.context!!)
                 val recyclerView = fragmentChooseASongFragment.view?.findViewById<RecyclerView>(R.id.recyclerViewQueue)
                 this.runOnUiThread({
                     recyclerView?.adapter = adapterTmp
@@ -115,6 +115,27 @@ class MainActivity : AppCompatActivity() {
                             request.add(requestTmp)
                     }
                 }
+            }
+        })
+
+        socket.on("respond add request from tablet",{
+            JsonReader(StringReader(it[0].toString())).use {
+                it.beginArray {
+                    while(it.hasNext()){
+                        val requestTmp = Klaxon().parse<Request>(it) as Request
+                        if (!request.contains(requestTmp))
+                            request.add(requestTmp)
+                    }
+                }
+            }
+            val fragmentRequestSong = supportFragmentManager.findFragmentByTag("fragment_request_song")
+            if(fragmentRequestSong!= null && fragmentRequestSong.isVisible){
+                val adapterTmp = CustomRequestRecyclerViewAdapter(request,fragmentRequestSong?.context!!)
+                val recyclerView = fragmentRequestSong.view?.findViewById<RecyclerView>(R.id.recyclerViewRequest)
+                this.runOnUiThread({
+                    recyclerView?.adapter = adapterTmp
+                    Toast.makeText(this, "request sent", Toast.LENGTH_LONG).show()
+                })
             }
         })
 
