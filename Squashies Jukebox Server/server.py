@@ -81,7 +81,7 @@ def background():
 
         for song in player.playlist(True):
             if "@current" in song:
-                if song['@id'] != currentSong:
+                if (song['@id'] != currentSong) and (currentSong != ""):
                     player.remove(currentSong)
                     currentSong = song["@id"]
                 socketio.emit("respond to sync", song['@name'])
@@ -847,6 +847,23 @@ def add_song_to_queue(data):
         cur.execute("INSERT INTO [queued] (songName, queuer,[timeStamp]) VALUES (?,?,?)", (jsonObj["@name"], "Tablet", stamp) )
         con.commit()
     player.add(jsonObj["@uri"])
+    
+@socketio.on('add request from tablet')
+def add_request(data):
+    jsonObj = json.loads(data)
+    with sql.connect('database.db') as con:
+                cur = con.cursor()
+                cur.execute("INSERT INTO [requests] (patronName, songName, email) VALUES (?,?,?)", (jsonObj["patronName"], jsonObj["songName"],jsonObj["email"]) )
+                con.commit()
+                cur.execute("SELECT * FROM requests")
+                requests = cur.fetchall()
+                tmp = []
+                for row in requests:
+                    request_as_dict = {'patronName': row[0], 'songName': row[1], 'email' : row[2]}
+                    tmp.append(request_as_dict)
+                jsonObj = json.dumps(tmp, ensure_ascii=False)
+    con.close()
+    socketio.emit("respond add request from tablet", jsonObj)
     
 def exit_handler():
     print("Squashies Jukebox shutting down...")
