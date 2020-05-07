@@ -13,6 +13,7 @@ import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.beust.klaxon.Klaxon
@@ -23,7 +24,8 @@ import kotlin.reflect.jvm.internal.impl.descriptors.annotations.BuiltInAnnotatio
 
 class ChooseASongFragment : Fragment(R.layout.fragment_choose_a_song){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
+        val buttonBack = activity?.findViewById<Button>(R.id.buttonBack)
+        buttonBack?.visibility = Button.VISIBLE
         return super.onCreateView(inflater, container, savedInstanceState)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -32,10 +34,10 @@ class ChooseASongFragment : Fragment(R.layout.fragment_choose_a_song){
         val queueTmp = ArrayList(MainActivity.queue)
         val recyclerViewQueue = view.findViewById<RecyclerView>(R.id.recyclerViewQueue)
         val recyclerViewLib = view.findViewById<RecyclerView>(R.id.recyclerView)
-        val buttonBack = view.findViewById<Button>(R.id.buttonChooseASongBack)
 
-        val adapter = CustomRecyclerViewAdapter(libTmp,view.context,{song -> onSongClick(song)})
+        val adapter = CustomRecyclerViewAdapter(libTmp,view.context) { song -> onSongClick(song)}
         recyclerViewLib.adapter = adapter
+        recyclerViewLib.addItemDecoration(DividerItemDecoration(context,DividerItemDecoration.VERTICAL))
         recyclerViewLib.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
 
         val queueAdapter = CustomQueueRecyclerViewAdapter(queueTmp,view.context)
@@ -55,13 +57,6 @@ class ChooseASongFragment : Fragment(R.layout.fragment_choose_a_song){
             }
 
         })
-
-        buttonBack.setOnClickListener {
-            val ft = this.fragmentManager?.beginTransaction()
-            ft?.remove(this)
-            ft?.replace(R.id.fragment_holder, HomeFragment(), "fragment_home")
-            ft?.commit()
-        }
     }
 
     private fun onSongClick(song: Song) {
@@ -73,11 +68,11 @@ class ChooseASongFragment : Fragment(R.layout.fragment_choose_a_song){
             DialogInterface.OnClickListener { dialogInterface, _ ->
                 dialogInterface.dismiss()
             })
-        alertDialogNotConnected.setPositiveButton("Yes", DialogInterface.OnClickListener { dialogInterface, _->
+        alertDialogNotConnected.setPositiveButton("Yes", DialogInterface.OnClickListener { _, _->
             if(MainActivity.queue.size >= MainActivity.queueSize){
                 Toast.makeText(this.context,"Queue is full! There should be only ${MainActivity.queueSize} songs in queue",Toast.LENGTH_LONG).show()
             }else if(MainActivity.queue.size < MainActivity.queueSize && MainActivity.queue.find{ it.uri == song.uri} == null) {
-                song.id = (MainActivity.queue.get(MainActivity.queue.lastIndex).id + 1)
+                song.id = (MainActivity.queue.maxBy { it.id }?.id + 1)
                 val recyclerViewQueue = this.view?.findViewById<RecyclerView>(R.id.recyclerViewQueue)
                 val queueTmp = MainActivity.queue
                 queueTmp.add(song)

@@ -9,7 +9,7 @@
         android:id="@+id/recyclerViewRequest"
         android:layout_width="0dp"
         android:layout_height="580dp"
-        android:layout_marginEnd="25dp"
+        android:layout_marginEnd="24dp"
         android:layout_marginBottom="23dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,13 +21,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="28dp"
-        android:layout_marginBottom="24dp"
         android:background="@drawable/request_form"
         android:padding="10sp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonSubmitRequest"
         app:layout_constraintEnd_toStartOf="@+id/recyclerViewRequest"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonRequestBack">
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewRequest">
 
         <TableRow
             android:layout_width="match_parent"
@@ -92,31 +90,15 @@
 
     <Button
         android:id="@+id/buttonSubmitRequest"
-        android:layout_width="213dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginBottom="316dp"
-        android:background="@drawable/submit_button"
-        android:fontFamily="@font/roboto_mono_medium"
-        android:textColor="@color/colorText"
-        android:text="Send the request"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
-
-    <Button
-        android:id="@+id/buttonRequestBack"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="33dp"
-        android:background="@drawable/back_button"
+        android:layout_marginTop="38dp"
+        android:background="@drawable/submit_button"
         android:fontFamily="@font/roboto_mono_medium"
-        android:text="Back"
+        android:text="Send the request"
         android:textColor="@color/colorText"
-        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,6 +17,8 @@ import kotlinx.android.synthetic.main.fragment_request_songs.*
 
 class RequestSongFragment : Fragment(R.layout.fragment_request_songs){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val buttonBack = activity?.findViewById<Button>(R.id.buttonBack)
+        buttonBack?.visibility = Button.VISIBLE
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -25,15 +27,8 @@ class RequestSongFragment : Fragment(R.layout.fragment_request_songs){
         val recyclerViewRequest = view.findViewById<RecyclerView>(R.id.recyclerViewRequest)
         val adapter = CustomRequestRecyclerViewAdapter(MainActivity.request,view.context)
         val buttonSubmit = view.findViewById<Button>(R.id.buttonSubmitRequest)
-
         recyclerViewRequest.adapter = adapter
         recyclerViewRequest.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
-        buttonRequestBack.setOnClickListener {
-            val ft = this.fragmentManager?.beginTransaction()
-            ft?.remove(this)
-            ft?.replace(R.id.fragment_holder, HomeFragment(), "fragment_home")
-            ft?.commit()
-        }
 
         buttonSubmit.setOnClickListener {
             val tmpRequest = Request(patronName = "${view.findViewById<EditText>(R.id.editTextRequestFirstName).text} ${view.findViewById<EditText>(R.id.editTextRequestLastName).text}", songName = "${view.findViewById<EditText>(R.id.editTextRequestSongName).text}", email = "${view.findViewById<EditText>(R.id.editTextRequestEmail).text}")
@@ -47,7 +42,7 @@ class RequestSongFragment : Fragment(R.layout.fragment_request_songs){
                     DialogInterface.OnClickListener { dialogInterface, _ ->
                         dialogInterface.dismiss()
                     })
-                alertDialogNotConnected.setPositiveButton("Yes", DialogInterface.OnClickListener { dialogInterface, _->
+                alertDialogNotConnected.setPositiveButton("Yes", DialogInterface.OnClickListener { _, _->
                     val jsonObj = Klaxon().toJsonString(tmpRequest)
                     if(MainActivity.request.contains(tmpRequest)){
                         Toast.makeText(view.context,"This request has been sent already",Toast.LENGTH_LONG).show()
