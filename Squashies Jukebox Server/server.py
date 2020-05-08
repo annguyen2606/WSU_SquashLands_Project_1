@@ -26,6 +26,7 @@ queueEmpty = False
 
 # Timer for regular announcements
 videoAnnouncementTimer = 10
+mobilePIN = "None"
 
 bufferForPlaylist = []
 
@@ -84,7 +85,7 @@ def background():
                 if (song['@id'] != currentSong) and (currentSong != ""):
                     player.remove(currentSong)
                     currentSong = song["@id"]
-                socketio.emit("respond to sync", song['@name'])
+                socketio.emit("respond to sync", song['@uri'])
 
 #Timer for Video Announcements
 def videoTimer():
@@ -550,7 +551,7 @@ def settings():
     if 'username' not in session:
         return redirect(url_for('index'))
 
-    return render_template('settings.html', queueSize=queueSize)
+    return render_template('settings.html', queueSize=queueSize, mobilePIN = mobilePIN)
 
 # Create new account
 @app.route('/Settings/NewAccount', methods = ['GET','POST'])
@@ -736,7 +737,17 @@ def changeQueueSize(size):
     global queueSize
     queueSize = int(size)
     print('Queue size changed to '+str(queueSize))
+    socketio.emit("web change queue size", queueSize)
     return 'Timer changed to go off every ' + str(videoAnnouncementTimer) + ' seconds'
+
+@app.route('/GenerateNewPIN/<pinNumber>')
+def generateNewPin(pinNumber):
+
+    global mobilePIN
+    mobilePIN = pinNumber
+    print('Mobile PIN changed to '+str(mobilePIN))
+    sync_pin_number()
+    return mobilePIN
 
 
 #Sends play command to VLC
@@ -821,6 +832,10 @@ def on_connect():
         print("failed")
         return False
     print("connect")
+
+@socketio.on('get pin number')
+def sync_pin_number():
+    socketio.emit('sync pin number', mobilePIN)
             
 @socketio.on('request request list')
 def request_request_list():

@@ -27,6 +27,7 @@
 
         });
 
+
     });
 
     function timeout() {
@@ -54,12 +55,28 @@
 
       });
 
-    }
+    };
 
     $(document).ready(function(){
       fetchCurrentSong();
       setInterval(fetchCurrentSong,10000);
-    })
+    });
+    
+    function generateNewNumber() {
+        var pinNumber = Math.floor(100000 + Math.random() * 900000);
+      $.ajax({
+
+        url:'/GenerateNewPIN/'+pinNumber,
+        type:'get',
+        success: function(response){
+
+          $('#pin_number').text(response);
+        }
+
+      });
+
+    }
+
 
   </script>
 
@@ -118,6 +135,13 @@
    footer button {
       width: 25%;
     }
+    
+   #pin_number{
+       border-style: solid;
+       margin-bottom: 20px;
+       font-size: 24px;
+       display:inline-block
+   }
 
    @media screen and (max-width: 600px) {
 
@@ -153,6 +177,13 @@
         margin-bottom: 22px;
 
       }
+      
+      #pin_number{
+        border-style: solid;
+        margin-bottom: 20px;
+        font-size: 12px;
+        display:inline-block
+       }
 
     }
 
@@ -211,7 +242,11 @@
 
   <h1>Logs</h1>
   <button type="button" class="btn btn-info" onclick="location.href='/Settings/Log'">View logs</button>
-  
+  <hr style="width: 80%">
+  <h1>Mobile PIN generator</h1>
+     <div id="pin_number">{{mobilePIN}}</div></br>
+     <button type="button" class="btn btn-info acc" onclick="generateNewNumber()">Generate</button>
+  <hr style="width: 80%">
 </div>
 
 <footer class="container-fixed text-center navbar-fixed-bottom" style=" height: 60px">
