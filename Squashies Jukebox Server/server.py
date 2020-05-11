@@ -25,7 +25,7 @@ activeUsers = []
 queueEmpty = False
 
 # Timer for regular announcements
-videoAnnouncementTimer = 10
+videoAnnouncementTimer = 20
 mobilePIN = "None"
 
 bufferForPlaylist = []
@@ -57,7 +57,6 @@ for root, dirs, files in os.walk(pathForAnnouncements):
 def background():
     global currentSong
     while True:
-        time.sleep(2)
         queue = player.playlist(True)
         media = player.playlist(False)
         if queue == "empty" or "@ro" in queue:
@@ -65,7 +64,6 @@ def background():
             toBeShuffled = media
             random.shuffle(toBeShuffled)
 
-            
             #Repopulate queue with songs
             for i,song in enumerate(toBeShuffled):
                 if i < 4:
@@ -75,6 +73,7 @@ def background():
                     else:
                         player.add(song["@uri"])
                     if i == 3:
+                        time.sleep(2.5)
                         socketio.emit("sync for repopulated queue", player.playlist(True))
             global queueEmpty
             queueEmpty = True
@@ -82,10 +81,14 @@ def background():
 
         for song in player.playlist(True):
             if "@current" in song:
-                if (song['@id'] != currentSong) and (currentSong != ""):
-                    player.remove(currentSong)
-                    currentSong = song["@id"]
-                socketio.emit("respond to sync", song['@uri'])
+                try:
+                    if (song['@id'] != currentSong) and (currentSong != ""):
+                        player.remove(currentSong)
+                        currentSong = song["@id"]
+                    socketio.emit("respond to sync", song['@uri'])
+                except TypeError:
+                    print(song)
+                    print(currentSong)
 
 #Timer for Video Announcements
 def videoTimer():
@@ -106,30 +109,29 @@ def videoTimer():
 
 # Queues up video announcement
 def randVidAnnou():
-    queue = player.playlist(True)
+    #queue = player.playlist(True)
 
-    if '@ro' not in queue:
-        for song in queue:
-            if "@current" not in song:
-                bufferForPlaylist.append(song['@uri'])
-                player.remove(song['@id'])
+    #if '@ro' not in queue:
+    #    for song in queue:
+    #        if "@current" not in song:
+    #            bufferForPlaylist.append(song['@uri'])
+    #            player.remove(song['@id'])
 
     random.shuffle(videoAnnouncements)
 
-    annAlreadyQueue = False
+    #annAlreadyQueue = False
 
-    for song in bufferForPlaylist:
-        for announcement in videoAnnouncements:
-            if song == announcement:
-                annAlreadyQueue = True
+    #for song in bufferForPlaylist:
+    #    for announcement in videoAnnouncements:
+    #        if song == announcement:
+    #            annAlreadyQueue = True
 
-    if annAlreadyQueue == False:
-        player.add(videoAnnouncements[0])
+    #if annAlreadyQueue == False:
+    player.add(videoAnnouncements[0])
+    #for song in bufferForPlaylist:
+    #    player.add(song)
 
-    for song in bufferForPlaylist:
-        player.add(song)
-
-    bufferForPlaylist.clear()
+    #bufferForPlaylist.clear()
 
 
 
@@ -280,7 +282,6 @@ def addToPlaylist():
     media = player.playlist(False)
     queue = player.playlist(True)
 
-    print(media)
 
     global queueEmpty
 
@@ -321,7 +322,7 @@ def addToPlaylist():
 
                 if queueEmpty == True:
                     removeBufferInPlaylist()
-
+                
                 queue = player.playlist(True)
 
                 if queueEmpty == False:
@@ -349,7 +350,9 @@ def addToPlaylist():
                 with open('log.txt', "a+") as file:
                     stamp = datetime.datetime.now()
                     file.write( str(stamp)[:16] + " " + track['@name'] + " added to queue by " + queuer + "\n")
-
+                time.sleep(2.5)
+                queue = player.playlist(True)
+                socketio.emit("sync for repopulated queue", queue)
                 print(song["@name"],"added to playlist")
                 break
 
@@ -382,6 +385,8 @@ def removeFromQueue(songID):
             player.remove(songID)
             print(media["@name"]+" removed from playlist")
             socketio.emit("web remove song from queue", media["@uri"])
+            time.sleep(2)
+            render_template('media.html', songs = player.playlist(False), queue = player.playlist(True))
     else:
 
         for song in media:
@@ -393,6 +398,9 @@ def removeFromQueue(songID):
                     player.remove(songID)
                     print(song["@name"]+" removed from playlist")
                     socketio.emit("web remove song from queue", song["@uri"])
+                    time.sleep(2)
+                    render_template('media.html', songs = player.playlist(False), queue = player.playlist(True))
+                    
 
     with open('log.txt', "a+") as file:
         stamp = datetime.datetime.now()
@@ -400,7 +408,7 @@ def removeFromQueue(songID):
             if song['@id'] == songID:
                 file.write( str(stamp)[:16] + " " + session['username'] + " removed "+ song['@name'] + " from the queue\n")
 
-    return redirect(url_for("media"))
+    return render_template('media.html', songs = player.playlist(False), queue = player.playlist(True))
 
 # Query for queued songs
 @app.route('/Statistics', methods = ['GET','POST'])
@@ -879,6 +887,32 @@ def add_request(data):
                 jsonObj = json.dumps(tmp, ensure_ascii=False)
     con.close()
     socketio.emit("respond add request from tablet", jsonObj)
+    
+@socketio.on('remove song from queue')
+def remove_song_from_queue(data):
+    jsonObj = json.loads(data)
+    queue = player.playlist(True)
+    for song in queue:
+        if jsonObj["@id"] == song["@id"]:
+            player.remove(jsonObj["@id"])
+            print("remove " + jsonObj["@name"])
+            socketio.emit("removed song from queue", jsonObj["@id"])
+            
+@socketio.on('modify queue')
+def tablet_modify_queue(data):
+    jsonObj = json.loads(data)
+    newQueueTmp = []
+    for i in range(len(jsonObj)):
+        if i > 0:
+            newQueueTmp.append(jsonObj[i])
+    for song in newQueueTmp:
+        player.remove(song["@id"])
+    
+    for song in newQueueTmp:
+        player.add(song["@uri"])
+    time.sleep(3)
+    socketio.emit("sync for repopulated queue", player.playlist(True))
+    print("queue modified!")
     
 def exit_handler():
     print("Squashies Jukebox shutting down...")
