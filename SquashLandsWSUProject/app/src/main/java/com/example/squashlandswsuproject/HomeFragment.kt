@@ -2,6 +2,7 @@ package com.example.squashlandswsuproject
 
 import android.app.Activity
 import android.content.DialogInterface
+import android.graphics.Interpolator
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -19,8 +20,8 @@ import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
-    var currentSongTmp = ""
-    lateinit var textViewPlayingSong: TextView
+    private var currentSongTmp = ""
+    private lateinit var textViewPlayingSong: TextView
     lateinit var logo: ImageView
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -28,6 +29,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val rotation = AnimationUtils.loadAnimation(view.context,R.anim.rotate)
+
         rotation.interpolator = LinearInterpolator()
         logo = view.findViewById<ImageView>(R.id.imageView) //get imageView contains logo
         val alertDialogNotConnected: AlertDialog.Builder = AlertDialog.Builder(view.context)

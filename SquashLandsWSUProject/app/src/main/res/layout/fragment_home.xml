@@ -27,9 +27,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="433dp"
+        android:layout_width="1278dp"
         android:layout_height="395dp"
-        android:layout_marginStart="424dp"
         android:src="@drawable/squash_land_logo"
         app:layout_constraintBottom_toTopOf="@+id/buttonRequestNewSong"
         app:layout_constraintStart_toStartOf="parent"

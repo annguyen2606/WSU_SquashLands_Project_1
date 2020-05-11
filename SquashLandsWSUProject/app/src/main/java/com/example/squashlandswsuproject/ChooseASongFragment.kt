@@ -31,7 +31,6 @@ class ChooseASongFragment : Fragment(R.layout.fragment_choose_a_song){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         val libTmp: ArrayList<Song> = ArrayList(MainActivity.library)
-        val queueTmp = ArrayList(MainActivity.queue)
         val recyclerViewQueue = view.findViewById<RecyclerView>(R.id.recyclerViewQueue)
         val recyclerViewLib = view.findViewById<RecyclerView>(R.id.recyclerView)
 
@@ -40,8 +39,12 @@ class ChooseASongFragment : Fragment(R.layout.fragment_choose_a_song){
         recyclerViewLib.addItemDecoration(DividerItemDecoration(context,DividerItemDecoration.VERTICAL))
         recyclerViewLib.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
 
-        val queueAdapter = CustomQueueRecyclerViewAdapter(queueTmp,view.context)
-        recyclerViewQueue.adapter = queueAdapter
+        val queueTmp = arrayListOf<Song>()
+        queueTmp.addAll(MainActivity.queue)
+        val recyclerViewAdapterQueue = CustomQueueRecyclerViewAdapter(queueTmp,view.context)
+
+        recyclerViewQueue.adapter = recyclerViewAdapterQueue
+        recyclerViewQueue.addItemDecoration(DividerItemDecoration(view.context, DividerItemDecoration.VERTICAL))
         recyclerViewQueue.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
 
         val searchView = view.findViewById<SearchView>(R.id.searchView)

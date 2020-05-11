@@ -1,5 +1,7 @@
 package com.example.squashlandswsuproject
 
+import android.animation.AnimatorInflater
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
@@ -8,14 +10,17 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateInterpolator
+import android.widget.LinearLayout
 import android.widget.TableRow
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.row_queue.view.*
 
 class CustomQueueRecyclerViewAdapter (var songs: ArrayList<Song>, var context: Context): RecyclerView.Adapter<CustomQueueRecyclerViewAdapter.ViewHolder>(){
-
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        @SuppressLint("ResourceType")
         fun bindItems(song: Song, position: Int) {
             val textViewSongItemName = itemView.findViewById<TextView>(R.id.songItemQueueName)
             val textViewSongItemDuration = itemView.findViewById<TextView>(R.id.songItemQueueDuration)
@@ -51,5 +56,21 @@ class CustomQueueRecyclerViewAdapter (var songs: ArrayList<Song>, var context: C
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems(songs[position], position)
+    }
+
+    fun removeItem(position: Int) {
+        songs.removeAt(position)
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position, songs.size)
+    }
+
+    fun repopulateData(newSongs: ArrayList<Song>){
+        songs.clear()
+        songs.addAll(newSongs)
+        this.notifyDataSetChanged()
+    }
+
+    fun getItemPosition(song: Song): Int{
+        return songs.indexOf(songs.find { tmp-> tmp.uri == song.uri })
     }
 }
