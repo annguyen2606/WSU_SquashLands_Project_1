@@ -50,6 +50,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
+            android:paddingTop="2sp"
             android:id="@+id/editTextSettingAnnouncement"
             android:layout_width="596dp"
             android:layout_height="52dp"
@@ -87,7 +88,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/editTextSettingIdleInterval"
+            android:paddingTop="2sp" android:id="@+id/editTextSettingIdleInterval"
             android:layout_width="108dp"
             android:layout_height="37dp"
             android:layout_marginStart="16dp"

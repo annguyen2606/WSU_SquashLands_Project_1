@@ -14,7 +14,7 @@ class ScreenSaverActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_screen_saver)
         if(MainActivity.screenSaverAnimation.contentEquals("Rotation")){
-            val rotation = AnimationUtils.loadAnimation(this,R.anim.rotate)
+            val rotation = AnimationUtils.loadAnimation(this,R.anim.rotate_fading)
 
             rotation.interpolator = LinearInterpolator()
             rotation.fillAfter = true
@@ -33,5 +33,6 @@ class ScreenSaverActivity : AppCompatActivity() {
         }
 
         textViewScreenSaverAnnouncement.text = MainActivity.announcement
+        textViewScreenSaverAnnouncement.isSelected = true
     }
 }

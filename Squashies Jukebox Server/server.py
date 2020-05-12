@@ -82,14 +82,15 @@ def background():
         for song in player.playlist(True):
             if "@current" in song:
                 try:
-                    if (song['@id'] != currentSong) and (currentSong != ""):
-                        player.remove(currentSong)
-                        currentSong = song["@id"]
-                    socketio.emit("respond to sync", song['@uri'])
+                    if "@id" in song:
+                        if (song['@id'] != currentSong) and (currentSong != ""):
+                            player.remove(currentSong)
+                            currentSong = song["@id"]
+                        socketio.emit("respond to sync", song['@uri'])
                 except TypeError:
                     print(song)
                     print(currentSong)
-
+                    
 #Timer for Video Announcements
 def videoTimer():
     global videoAnnouncementTimer
@@ -109,7 +110,6 @@ def videoTimer():
 
 # Queues up video announcement
 def randVidAnnou():
-    #queue = player.playlist(True)
 
     #if '@ro' not in queue:
     #    for song in queue:
@@ -856,7 +856,6 @@ def request_request_list():
             request_as_dict = {'patronName': row[0], 'songName': row[1], 'email' : row[2]}
             tmp.append(request_as_dict)
         requests = json.dumps(tmp, ensure_ascii=False)
-        print(requests)
         socketio.emit('respond request request list', requests)
 
 @socketio.on('add song to queue from tablet')

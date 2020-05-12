@@ -9,7 +9,15 @@
         android:orderInCategory="300"
         android:title="Setting"
         android:icon="@drawable/setting_icon"
-        app:showAsAction="ifRoom">
-
+        app:showAsAction= "collapseActionView"
+        >
+    </item>
+    <item
+        android:id="@+id/action_statistic"
+        android:orderInCategory="400"
+        android:title="Statistics"
+        android:icon="@drawable/stats_icon"
+        app:showAsAction= "collapseActionView"
+        >
     </item>
 </menu>

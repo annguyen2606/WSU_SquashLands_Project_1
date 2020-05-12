@@ -22,7 +22,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="284dp"
-        android:background="@color/colorSquashie"
+        android:background="#000000"
         android:ellipsize="marquee"
         android:fontFamily="@font/roboto_mono"
         android:marqueeRepeatLimit="marquee_forever"
