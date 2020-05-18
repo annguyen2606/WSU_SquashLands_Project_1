@@ -1,6 +1,7 @@
 package com.example.squashlandswsuproject
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,12 @@ import java.io.StringReader
 class StatisticFragment: Fragment(R.layout.fragment_statistic) {
     val queueds = arrayListOf<Queued>()
     var statusFlag = false
+    var logoutHandler = Handler()
+    lateinit var runnableLogout: Runnable
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        val buttonBack = activity?.findViewById<Button>(R.id.buttonBack)
+        buttonBack?.visibility = Button.VISIBLE
         MainActivity.socket.emit("request statistics log")
         MainActivity.socket.on("respond request statistic log"){
             JsonReader(StringReader(it[0].toString())).use { reader ->
@@ -31,6 +37,15 @@ class StatisticFragment: Fragment(R.layout.fragment_statistic) {
             }
             statusFlag = true
         }
+        runnableLogout = Runnable {
+            val ftTransaction = activity?.supportFragmentManager?.beginTransaction()
+            activity?.runOnUiThread {
+                ftTransaction?.replace(R.id.fragment_holder,HomeFragment(), "fragment_home")
+                ftTransaction?.commit()
+                buttonBack?.visibility = Button.INVISIBLE
+            }
+        }
+
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
@@ -89,6 +104,27 @@ class StatisticFragment: Fragment(R.layout.fragment_statistic) {
             }
         }
 
+        startLogoutHandler()
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun startLogoutHandler(){
+        logoutHandler.postDelayed(runnableLogout, 30000)
+    }
+
+    fun stopLogoutHandler(){
+        logoutHandler.removeCallbacks(runnableLogout)
+    }
+
+    fun resetLogoutHandler(){
+        stopLogoutHandler()
+        startLogoutHandler()
+    }
+
+    override fun onDestroy() {
+
+        stopLogoutHandler()
+        super.onDestroy()
+
     }
 }

@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this@MainActivity,ScreenSaverActivity::class.java)
         startActivity(intent)
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -69,6 +70,7 @@ class MainActivity : AppCompatActivity() {
                 queueActual.clear()
                 queueSetting.clear()
             }
+            request.clear()
             val tmp = it[0] as JSONArray
             JsonReader(StringReader(tmp[0].toString())).use {
                 it.beginArray {
@@ -207,6 +209,13 @@ class MainActivity : AppCompatActivity() {
 
         socket.on("disconnect") {
             connectStatus = false
+            runOnUiThread {
+                currentSong = ""
+                val fTransaction = supportFragmentManager.beginTransaction()
+                fTransaction.replace(R.id.fragment_holder, HomeFragment(),"fragment_home")
+                fTransaction.commit()
+                buttonBack.visibility = Button.VISIBLE
+            }
         }
 
         socket.on("web change queue size"){
@@ -344,8 +353,14 @@ class MainActivity : AppCompatActivity() {
         super.onUserInteraction()
         resetScreenSaverHandler()
         val fragmentSettingFragment = supportFragmentManager.findFragmentByTag("fragment_settings")
+        val fragmentStats = supportFragmentManager.findFragmentByTag("fragment_statistic")
+
         if(fragmentSettingFragment != null && fragmentSettingFragment.isVisible){
             (fragmentSettingFragment as SettingFragment).resetLogoutHandler()
+        }
+
+        if(fragmentStats != null && fragmentStats.isVisible){
+            (fragmentStats as StatisticFragment).resetLogoutHandler()
         }
     }
 

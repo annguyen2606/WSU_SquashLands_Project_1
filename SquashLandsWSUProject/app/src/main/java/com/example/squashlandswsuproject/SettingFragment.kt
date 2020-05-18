@@ -138,7 +138,7 @@ class SettingFragment: Fragment(R.layout.fragment_settings) {
 
         buttonSettingStatistic.setOnClickListener {
             val fTransaction = activity?.supportFragmentManager?.beginTransaction()
-            fTransaction?.replace(R.id.fragment_holder, StatisticFragment())
+            fTransaction?.replace(R.id.fragment_holder, StatisticFragment(), "fragment_statistic")
             fTransaction?.commit()
         }
 
@@ -157,7 +157,7 @@ class SettingFragment: Fragment(R.layout.fragment_settings) {
         buttonSettingNext.setOnClickListener {
             MainActivity.socket.emit("tablet request next")
         }
-
+        startLogoutHandler()
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -187,7 +187,7 @@ class SettingFragment: Fragment(R.layout.fragment_settings) {
         logoutHandler.postDelayed(runnableLogout, 30000)
     }
 
-    fun stopLogoutHandler(){
+    private fun stopLogoutHandler(){
         logoutHandler.removeCallbacks(runnableLogout)
     }
 
