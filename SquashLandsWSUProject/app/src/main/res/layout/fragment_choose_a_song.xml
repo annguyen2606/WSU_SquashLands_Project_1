@@ -23,15 +23,15 @@
 
         android:layout_marginStart="32dp"
         android:layout_marginTop="88dp"
-        android:background="@drawable/clickable_list_item"
+        android:background="@drawable/ripple"
         android:iconifiedByDefault="false"
         android:queryHint="@string/search_hint"
         android:singleLine="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:theme="@style/Widget.AppCompat.ActionBar">
-
+        app:theme="@style/Widget.AppCompat.ActionBar"
+        android:clickable="true">
     </SearchView>
 
     <androidx.recyclerview.widget.RecyclerView

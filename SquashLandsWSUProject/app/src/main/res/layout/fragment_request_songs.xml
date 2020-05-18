@@ -37,7 +37,7 @@
                 android:layout_width="602dp"
                 android:layout_height="match_parent"
                 android:ems="10"
-                android:fontFamily="@font/roboto_mono"
+                android:fontFamily="@font/anton"
                 android:hint="Name of the song"
                 android:inputType="textPersonName" />
         </TableRow>
@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:fontFamily="@font/roboto_mono"
+                android:fontFamily="@font/anton"
                 android:hint="Your first name"
                 android:inputType="textPersonName" />
         </TableRow>
@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:fontFamily="@font/roboto_mono"
+                android:fontFamily="@font/anton"
                 android:hint="Your last name"
                 android:inputType="textPersonName" />
         </TableRow>
@@ -82,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:fontFamily="@font/roboto_mono"
+                android:fontFamily="@font/anton"
                 android:hint="Your email e.g. example@gmail.com"
                 android:inputType="textEmailAddress" />
         </TableRow>
@@ -90,12 +90,12 @@
 
     <Button
         android:id="@+id/buttonSubmitRequest"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="126dp"
+        android:layout_height="43dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="38dp"
         android:background="@drawable/submit_button"
-        android:fontFamily="@font/roboto_mono_medium"
+        android:fontFamily="@font/anton"
         android:text="Send the request"
         android:textColor="@color/colorText"
         app:layout_constraintStart_toStartOf="parent"

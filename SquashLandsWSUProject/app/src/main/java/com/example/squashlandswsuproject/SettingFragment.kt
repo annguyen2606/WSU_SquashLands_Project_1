@@ -3,6 +3,7 @@ package com.example.squashlandswsuproject
 import android.annotation.SuppressLint
 import android.content.Context.MODE_PRIVATE
 import android.content.DialogInterface
+import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -10,6 +11,8 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.view.animation.LinearInterpolator
 import android.widget.*
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AlertDialog
@@ -31,7 +34,14 @@ class SettingFragment: Fragment(R.layout.fragment_settings) {
     var queueSettingTmp = arrayListOf<Song>()
     lateinit var recyclerViewAdapter: CustomSettingRecyclerViewAdapter
     var logoutHandler = Handler()
+    lateinit var recyclerView: RecyclerView
     lateinit var runnableLogout: Runnable
+    var readyStatus = true
+    lateinit var editTextAnnouncement: EditText
+    lateinit var editTextIdleInterval: EditText
+    lateinit var radioButtonRotation: RadioButton
+    lateinit var radioButtonPumping: RadioButton
+    lateinit var sharedReferencesEditor: SharedPreferences.Editor
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val buttonBack = activity?.findViewById<Button>(R.id.buttonBack)
         buttonBack?.visibility = Button.VISIBLE
@@ -50,13 +60,18 @@ class SettingFragment: Fragment(R.layout.fragment_settings) {
     @SuppressLint("CommitPrefEdits")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         recyclerViewAdapter = CustomSettingRecyclerViewAdapter(MainActivity.queueSetting, view.context)
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewSetting)
+        recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewSetting)
 
         recyclerView.adapter = recyclerViewAdapter
         recyclerView.addItemDecoration(DividerItemDecoration(view.context, DividerItemDecoration.VERTICAL))
         recyclerView.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
         val itemTouchHelper = ItemTouchHelper(createItemTouchHelper()!!)
         itemTouchHelper.attachToRecyclerView(recyclerView)
+
+        val imageSettingLogo = view.findViewById<ImageView>(R.id.imageViewSettingLogo)
+        val rotation = AnimationUtils.loadAnimation(view.context,R.anim.rotate)
+        rotation.interpolator = LinearInterpolator()
+        rotation.fillAfter = true
 
         recyclerView.addOnItemTouchListener(CustomRecyclerViewOnItemTouchListener(activity, recyclerView, object : ClickListener {
             override fun onClick(view: View?, position: Int) {
@@ -81,37 +96,38 @@ class SettingFragment: Fragment(R.layout.fragment_settings) {
             buttonSubmitQueue.visibility = Button.INVISIBLE
             Toast.makeText(view.context,"Queue Modified Successfully", Toast.LENGTH_LONG).show()
         }
-        val editTextAnnouncement = view.findViewById<EditText>(R.id.editTextSettingAnnouncement)
-        val editTextIdleInterval = view.findViewById<EditText>(R.id.editTextSettingIdleInterval)
-        val radioButtonRotation = view.findViewById<RadioButton>(R.id.radioButtonSettingScreenSaverRotation)
-        val radioButtonPumping = view.findViewById<RadioButton>(R.id.radioButtonSettingScreenSaverPumping)
+        editTextAnnouncement = view.findViewById<EditText>(R.id.editTextSettingAnnouncement)
+        editTextIdleInterval = view.findViewById<EditText>(R.id.editTextSettingIdleInterval)
+        val textViewSettingPlayingSong = view.findViewById<TextView>(R.id.textViewSettingPlayingSong)
+        val textViewSettingPlayingTime = view.findViewById<TextView>(R.id.textViewSettingPlayingTime)
+        radioButtonRotation = view.findViewById<RadioButton>(R.id.radioButtonSettingScreenSaverRotation)
+        radioButtonPumping = view.findViewById<RadioButton>(R.id.radioButtonSettingScreenSaverPumping)
         val buttonSettingApply = view.findViewById<Button>(R.id.buttonSettingApply)
         val buttonSettingLoadDefault = view.findViewById<Button>(R.id.buttonSettingLoadDefault)
-        val sharedReferencesEditor  = activity?.getSharedPreferences(MainActivity.preferencesStr, MODE_PRIVATE)!!.edit()
+        val buttonSettingStatistic = view.findViewById<Button>(R.id.buttonSettingStatistic)
+        sharedReferencesEditor  = activity?.getSharedPreferences(MainActivity.preferencesStr, MODE_PRIVATE)!!.edit()
+        val buttonSettingPlayStop = view.findViewById<ImageButton>(R.id.imageButtonSettingPlayStop)
+        val buttonSettingNext = view.findViewById<ImageButton>(R.id.imageButtonSettingNext)
+
+        if(MainActivity.playingStatus) {
+            buttonSettingPlayStop.setImageResource(android.R.drawable.ic_media_pause)
+            imageSettingLogo.animation = rotation
+            rotation.start()
+        }else
+            buttonSettingPlayStop.setImageResource(android.R.drawable.ic_media_play)
+        val currentSong = MainActivity.queue.minBy { it.id }
+        textViewSettingPlayingSong.text = currentSong?.name
+
+        val minute = currentSong?.duration!!.toInt() / 60
+        val second = currentSong?.duration!!.toInt() % 60
+
+        if (second == 0)
+            textViewSettingPlayingTime.text = minute.toString() + ":00"
+        else
+            textViewSettingPlayingTime?.text = minute.toString() + ":" + second.toString()
 
         buttonSettingApply.setOnClickListener {
-            sharedReferencesEditor.putString(MainActivity.announcementStr, editTextAnnouncement.text.toString())
-            sharedReferencesEditor.putInt(MainActivity.idleIntervalStr, editTextIdleInterval.text.toString().toInt())
-            if(radioButtonRotation.isChecked) {
-                sharedReferencesEditor.putString(
-                    MainActivity.screenSaverAnimation,
-                    radioButtonRotation.text.toString()
-                )
-                MainActivity.screenSaverAnimation = radioButtonRotation.text.toString()
-            }else if(radioButtonPumping.isChecked) {
-                sharedReferencesEditor.putString(
-                    MainActivity.screenSaverAnimationStr,
-                    radioButtonPumping.text.toString()
-                )
-                MainActivity.screenSaverAnimation = radioButtonPumping.text.toString()
-            }
-
-            sharedReferencesEditor.apply()
-            val textViewAnnouncement = activity?.findViewById<TextView>(R.id.textViewAnnouncement)
-            textViewAnnouncement?.text = editTextAnnouncement.text.toString()
-
-            MainActivity.announcement = editTextAnnouncement.text.toString()
-            MainActivity.idleInterval = editTextIdleInterval.text.toString().toInt()
+            saveSettings()
         }
 
         buttonSettingLoadDefault.setOnClickListener {
@@ -120,6 +136,13 @@ class SettingFragment: Fragment(R.layout.fragment_settings) {
             radioButtonRotation.isChecked = true
         }
 
+        buttonSettingStatistic.setOnClickListener {
+            val fTransaction = activity?.supportFragmentManager?.beginTransaction()
+            fTransaction?.replace(R.id.fragment_holder, StatisticFragment())
+            fTransaction?.commit()
+        }
+
+
         editTextAnnouncement.setText(MainActivity.announcement)
         editTextIdleInterval.setText(MainActivity.idleInterval.toString())
         if(MainActivity.screenSaverAnimation.contentEquals("Rotation"))
@@ -127,10 +150,40 @@ class SettingFragment: Fragment(R.layout.fragment_settings) {
         else if(MainActivity.screenSaverAnimation.contentEquals("Pumping"))
             radioButtonPumping.isChecked = true
 
+        buttonSettingPlayStop.setOnClickListener {
+                MainActivity.socket.emit("tablet request pause play")
+        }
+
+        buttonSettingNext.setOnClickListener {
+            MainActivity.socket.emit("tablet request next")
+        }
+
         super.onViewCreated(view, savedInstanceState)
     }
 
-    fun startLogoutHandler(){
+    fun saveSettings(){
+        val announcement = editTextAnnouncement.text.toString()
+        val idleInterval = editTextIdleInterval.text.toString().toInt()
+        var screenSaverAnim = ""
+        if(radioButtonRotation.isChecked) {
+            screenSaverAnim = radioButtonRotation.text.toString()
+        }else if(radioButtonPumping.isChecked) {
+            screenSaverAnim = radioButtonPumping.text.toString()
+        }
+        sharedReferencesEditor.putString(MainActivity.announcementStr, announcement)
+        sharedReferencesEditor.putInt(MainActivity.idleIntervalStr, idleInterval)
+        sharedReferencesEditor.putString(MainActivity.screenSaverAnimation, screenSaverAnim)
+        sharedReferencesEditor.apply()
+        val textViewAnnouncement = activity?.findViewById<TextView>(R.id.textViewAnnouncement)
+        textViewAnnouncement?.text = announcement
+
+        MainActivity.announcement = announcement
+        MainActivity.idleInterval = idleInterval
+        MainActivity.screenSaverAnimation = screenSaverAnim
+        MainActivity.socket.emit("tablet modify mobile announcement text", MainActivity.announcement)
+    }
+
+    private fun startLogoutHandler(){
         logoutHandler.postDelayed(runnableLogout, 30000)
     }
 
@@ -178,28 +231,38 @@ class SettingFragment: Fragment(R.layout.fragment_settings) {
                     buttonSubmitQueue.visibility = Button.VISIBLE
                 super.onMoved(recyclerView, viewHolder, fromPos, target, toPos, x, y)
             }
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val alertDialog: AlertDialog.Builder = AlertDialog.Builder(activity!!)
-                alertDialog.setCancelable(true)
-                alertDialog.setTitle("Confirm")
-                alertDialog.setMessage("Delete ${recyclerViewAdapter.getSongAt(viewHolder.adapterPosition).name} ?")
-                alertDialog.setNegativeButton("No",
-                    DialogInterface.OnClickListener { dialogInterface, _ ->
-                        dialogInterface.cancel()
-                        recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
-                    }
-                )
-                alertDialog.setPositiveButton("Yes",
-                    DialogInterface.OnClickListener { _, _ ->
-                        MainActivity.socket.emit("remove song from queue", Klaxon().toJsonString(recyclerViewAdapter.getSongAt(viewHolder.adapterPosition)))
-                        recyclerViewAdapter.removeItem(viewHolder.adapterPosition)
-                        queueSettingTmp.clear()
-                        queueSettingTmp.addAll(recyclerViewAdapter.songs)
-                        buttonSubmitQueue.visibility = Button.INVISIBLE
-                    }
-                )
 
-                alertDialog.show()
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                if(readyStatus){
+                    val alertDialog: AlertDialog.Builder = AlertDialog.Builder(activity!!)
+                    alertDialog.setCancelable(true)
+                    alertDialog.setTitle("Confirm")
+                    alertDialog.setMessage("Delete ${recyclerViewAdapter.getSongAt(viewHolder.adapterPosition).name} ?")
+                    alertDialog.setNegativeButton("No",
+                    DialogInterface.OnClickListener { dialogInterface, _ ->
+                            dialogInterface.cancel()
+                            recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
+                        }
+                    )
+                    alertDialog.setPositiveButton("Yes",
+                        DialogInterface.OnClickListener { _, _ ->
+                            try {
+                                MainActivity.socket.emit("remove song from queue", Klaxon().toJsonString(recyclerViewAdapter.getSongAt(viewHolder.adapterPosition)))
+                                queueSettingTmp.clear()
+                                queueSettingTmp.addAll(recyclerViewAdapter.songs)
+                                buttonSubmitQueue.visibility = Button.INVISIBLE
+                                Toast.makeText(view?.context,"Deleted ${recyclerViewAdapter.getSongAt(viewHolder.adapterPosition).name}",Toast.LENGTH_LONG).show()
+                            }catch (exception: ArrayIndexOutOfBoundsException){
+                                recyclerViewAdapter.notifyItemChanged(viewHolder.adapterPosition)
+                                if(readyStatus)
+                                    Toast.makeText(view?.context,"Playlist is ready now",Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    )
+
+                    alertDialog.show()
+                }else
+                    Toast.makeText(this@SettingFragment.context,"Playlist is in processing", Toast.LENGTH_LONG).show()
             }
 
             override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {

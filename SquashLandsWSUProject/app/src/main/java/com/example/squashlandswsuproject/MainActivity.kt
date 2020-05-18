@@ -1,7 +1,11 @@
 package com.example.squashlandswsuproject
 
+import android.animation.AnimatorInflater
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,11 +15,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.Window
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.Toast
+import android.view.animation.AnimationUtils
+import android.view.animation.LinearInterpolator
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.RecyclerView
+import com.beust.klaxon.JsonArray
 import com.beust.klaxon.JsonReader
 import com.beust.klaxon.Klaxon
 import io.socket.client.IO
@@ -43,9 +50,9 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
         textViewAnnouncement.isSelected = true;
-
+        loadReferences()
         socket.once("connect"){
-            loadReferences()
+            socket.emit("tablet modify mobile announcement text", announcement)
         }
 
         socket.on("connect") {
@@ -59,6 +66,7 @@ class MainActivity : AppCompatActivity() {
                 library.clear()
             if(queue.size > 0){
                 queue.clear()
+                queueActual.clear()
                 queueSetting.clear()
             }
             val tmp = it[0] as JSONArray
@@ -66,14 +74,15 @@ class MainActivity : AppCompatActivity() {
                 it.beginArray {
                     while (it.hasNext()){
                         val song = Klaxon().parse<Song>(it) as Song
-                        if(!song.uri.contains("/Video%20Announcements/")){
-                            queue.add(song)
-                        }
+                        queueActual.add(song)
                     }
                 }
             }
-
-            queue.sortBy { it.id }
+            queueActual.sortBy { it.id }
+            queue.addAll(queueActual)
+            if(queueActual.find{it.uri.contains("/Video%20Announcements/")} != null){
+                queue.remove(queueActual.find { it.uri.contains("/Video%20Announcements/") }!!)
+            }
 
             JsonReader(StringReader(tmp[1].toString())).use {
                 it.beginArray {
@@ -95,17 +104,23 @@ class MainActivity : AppCompatActivity() {
 
         val fTransaction = supportFragmentManager.beginTransaction()
         socket.on("respond to sync") {
-            val tmp = it[0].toString()
+            val tmpJsonArray = it[0] as JSONArray
+            val tmp = tmpJsonArray[0].toString()
             if (connectStatus){
                 try {
-                    val currentSongTmp = queue.find { song -> song.uri == tmp }
+                    val currentSongTmp = queueActual.find { song -> song.uri == tmp }
                     if(currentSongTmp != null){
-                        if (queue.minBy { song -> song.id } != currentSongTmp && !currentSongTmp.uri.contains("/Video%20Announcements/")) {
-                            currentSong = currentSongTmp.name
-                            val oldSong = queue.minBy { song -> song.id }
-                            queueRemoveSong(oldSong!!)
-
-                            settingQueueRemoveSong(currentSongTmp)
+                        if (queueActual.minBy { song -> song.id }?.uri != currentSongTmp.uri) {
+                            if(!currentSongTmp.uri.contains("/Video%20Announcements/") &&  queue.find { it.uri == currentSongTmp.uri } != null) {
+                                val oldSong = queue.minBy { song -> song.id }
+                                if (oldSong != null && oldSong.uri != currentSongTmp.uri) {
+                                    currentSong = currentSongTmp.name
+                                    queueRemoveSong(oldSong)
+                                    settingQueueRemoveSong(currentSongTmp)
+                                }
+                                settingLoadCurrentSong(currentSongTmp)
+                            }
+                            queueActual.remove(queueActual.minBy { song -> song.id })
                         }
                     }
                 }catch (e: Exception){
@@ -116,34 +131,40 @@ class MainActivity : AppCompatActivity() {
 
         socket.on("web remove song from queue") {
             val uriTmp = it[0].toString()
-            val removedSong = queue.find { it.uri == uriTmp }
+            val removedSong = queueActual.find { it.uri == uriTmp }
             if(removedSong != null){
-                queueRemoveSong(removedSong)
-                settingQueueRemoveSong(removedSong)
+                if(!removedSong.uri.contains("/Video%20Announcements/")){
+                    queueRemoveSong(removedSong)
+                    settingQueueRemoveSong(removedSong)
+                }
+                queueActual.remove(removedSong)
             }
         }
 
         socket.on("sync for repopulated queue") { it ->
-
+            queueActual.clear()
             val tmp = it[0] as JSONArray
             val queueTmp = arrayListOf<Song>()
             JsonReader(StringReader(tmp.toString())).use {reader ->
                 reader.beginArray {
                     while (reader.hasNext()){
                         val song = Klaxon().parse<Song>(reader) as Song
-                        if(!song.uri.contains("/Video%20Announcements/"))
-                            queueTmp.add(song)
+                        queueTmp.add(song)
                     }
                 }
             }
-
+            queueActual.addAll(queueTmp)
+            queueActual.sortBy { it.id }
+            if(queueActual.find { it.uri.contains("/Video%20Announcements/") } != null){
+                queueTmp.removeAll(queueActual.filter { it.uri.contains("/Video%20Announcements/") })
+            }
             queueRepopulate(queueTmp)
-
             val queueSettingTmp = arrayListOf<Song>()
             queueSettingTmp.addAll(queue)
-            queueSettingTmp.removeAt(0)
-
-            settingQueueRepopulate(queueSettingTmp)
+            if(queueSettingTmp.size > 1){
+                queueSettingTmp.removeAt(0)
+                settingQueueRepopulate(queueSettingTmp)
+            }
         }
 
         socket.on("respond request request list") {
@@ -170,7 +191,7 @@ class MainActivity : AppCompatActivity() {
             }
             val fragmentRequestSong = supportFragmentManager.findFragmentByTag("fragment_request_song")
             if(fragmentRequestSong!= null && fragmentRequestSong.isVisible){
-                val adapterTmp = CustomRequestRecyclerViewAdapter(request,fragmentRequestSong?.context!!)
+                val adapterTmp = CustomRequestRecyclerViewAdapter(request,fragmentRequestSong.context!!)
                 val recyclerView = fragmentRequestSong.view?.findViewById<RecyclerView>(R.id.recyclerViewRequest)
                 this.runOnUiThread {
                     recyclerView?.adapter = adapterTmp
@@ -195,17 +216,102 @@ class MainActivity : AppCompatActivity() {
 
         socket.on("removed song from queue"){
             val tmp = it[0].toString()
+            queue.find { song->song.id == tmp }?.let { it1 -> settingQueueRemoveSong(it1) }
             queue.remove(queue.find { song->song.id == tmp })
         }
         val homeFragment = HomeFragment()
         fTransaction.replace(R.id.fragment_holder, homeFragment, "fragment_home")
         fTransaction.commit()
         buttonBack.setOnClickListener {
+            var settingFragment = supportFragmentManager.findFragmentByTag("fragment_settings")
+            if(settingFragment != null && settingFragment.isVisible){
+                settingFragment = settingFragment as SettingFragment
+                val announcement = settingFragment.editTextAnnouncement.text.toString()
+                val idleInterval = settingFragment.editTextIdleInterval.text.toString().toInt()
+                var screenSaverAnim = ""
+                if(settingFragment.radioButtonRotation.isChecked)
+                    screenSaverAnim = settingFragment.radioButtonRotation.text.toString()
+                else if(settingFragment.radioButtonPumping.isChecked)
+                    screenSaverAnim = settingFragment.radioButtonPumping.text.toString()
 
-            supportFragmentManager.beginTransaction().replace(R.id.fragment_holder,homeFragment).commit()
-            buttonBack.visibility = Button.INVISIBLE
+                if (announcement != MainActivity.announcement || idleInterval != MainActivity.idleInterval || screenSaverAnim != MainActivity.screenSaverAnimation){
+                    val alertDialog: AlertDialog.Builder = AlertDialog.Builder(this)
+                    alertDialog.setCancelable(true)
+                    alertDialog.setTitle("Confirmation")
+                    alertDialog.setMessage("Apply new settings ?")
+                    alertDialog.setNegativeButton("No",
+                        DialogInterface.OnClickListener { dialogInterface, _ ->
+                            dialogInterface.dismiss()
+                            supportFragmentManager.beginTransaction().replace(R.id.fragment_holder,homeFragment).commit()
+                            buttonBack.visibility = Button.INVISIBLE
+                        }
+                    )
+                    alertDialog.setPositiveButton("Yes",
+                        DialogInterface.OnClickListener { _, _ ->
+                            settingFragment.saveSettings()
+                            supportFragmentManager.beginTransaction().replace(R.id.fragment_holder,homeFragment).commit()
+                            buttonBack.visibility = Button.INVISIBLE
+                        }
+                    )
+
+                    alertDialog.show()
+                }
+            }else{
+                supportFragmentManager.beginTransaction().replace(R.id.fragment_holder,homeFragment).commit()
+                buttonBack.visibility = Button.INVISIBLE
+            }
         }
 
+        socket.on("web modify mobile announcement text"){
+            val strNewAnnouncement = it[0].toString()
+            val editor = getSharedPreferences(preferencesStr, Context.MODE_PRIVATE).edit()
+            editor.putString(announcementStr,strNewAnnouncement)
+            editor.apply()
+            val settingFragment = supportFragmentManager.findFragmentByTag("fragment_settings")
+            if(settingFragment != null && settingFragment.isVisible){
+                val editTextAnnouncement = settingFragment.view?.findViewById<EditText>(R.id.editTextSettingAnnouncement)
+                runOnUiThread {
+                    editTextAnnouncement?.setText(strNewAnnouncement)
+                }
+            }
+            announcement = strNewAnnouncement
+            runOnUiThread {
+                textViewAnnouncement.text = announcement
+            }
+        }
+
+        socket.on("sync status"){
+            val tmp = it[0].toString()
+            var booleanTmp = tmp == "playing"
+
+            if(booleanTmp != playingStatus){
+                playingStatus = booleanTmp
+                val fragmentSettingFragment = supportFragmentManager.findFragmentByTag("fragment_settings")
+                if(fragmentSettingFragment != null && fragmentSettingFragment.isVisible){
+                    val buttonSettingPlayStop = fragmentSettingFragment.view?.findViewById<ImageButton>(R.id.imageButtonSettingPlayStop)
+                    val textViewPlayingStatus = fragmentSettingFragment.view?.findViewById<TextView>(R.id.textViewSettingPlayingStatus)
+                    val imageSettingLogo = fragmentSettingFragment.view?.findViewById<ImageView>(R.id.imageViewSettingLogo)
+                    val rotation = AnimationUtils.loadAnimation(fragmentSettingFragment.context,R.anim.rotate)
+                    if (playingStatus) {
+                        rotation.interpolator = LinearInterpolator()
+                        rotation.fillAfter = true
+                        runOnUiThread {
+                            buttonSettingPlayStop?.setImageResource(android.R.drawable.ic_media_pause)
+                            textViewPlayingStatus?.text = "Playing"
+                            textViewPlayingStatus?.setTextColor(Color.parseColor("#608E0B"))
+                            imageSettingLogo?.animation = rotation
+                            rotation.start()
+                        }
+                    }else
+                        runOnUiThread {
+                            buttonSettingPlayStop?.setImageResource(android.R.drawable.ic_media_play)
+                            textViewPlayingStatus?.text = "Paused"
+                            textViewPlayingStatus?.setTextColor(Color.parseColor("#FF7F11"))
+                            imageSettingLogo?.clearAnimation()
+                        }
+                }
+            }
+        }
     }
 
     private fun startScreenSaverHandler(){
@@ -271,11 +377,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun queueRemoveSong(song: Song){
-        queue.remove(song)
-        val queueTmp = arrayListOf<Song>()
-        queueTmp.addAll(queue)
         val fragmentChooseASongFragment = supportFragmentManager.findFragmentByTag("fragment_choose_a_song")
-
         if(fragmentChooseASongFragment != null && fragmentChooseASongFragment.isVisible){
             val recyclerView = fragmentChooseASongFragment.view?.findViewById<RecyclerView>(R.id.recyclerViewQueue)
             val adapterTmp = (recyclerView?.adapter as CustomQueueRecyclerViewAdapter)
@@ -283,15 +385,16 @@ class MainActivity : AppCompatActivity() {
                 try {
                     adapterTmp.removeItem(adapterTmp.songs.indexOf(adapterTmp.songs.find{it.uri == song.uri}))
                 }catch (exception: java.lang.Exception) {
-                    Toast.makeText(this@MainActivity, queue.size.toString(),Toast.LENGTH_LONG).show()
+                    queue.remove(song)
+                    adapterTmp.repopulateData(queue)
                 }
             }
-        }
+        }else
+            queue.remove(song)
     }
 
     private fun settingQueueRemoveSong(song: Song){
-        val fragmentSettingFragment = supportFragmentManager.findFragmentByTag("fragment_settings")
-
+        var fragmentSettingFragment = supportFragmentManager.findFragmentByTag("fragment_settings")
         if(fragmentSettingFragment != null && fragmentSettingFragment.isVisible) {
             val recyclerView = fragmentSettingFragment.view?.findViewById<RecyclerView>(R.id.recyclerViewSetting)
             val adapter = recyclerView?.adapter as CustomSettingRecyclerViewAdapter
@@ -303,28 +406,36 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun queueRepopulate(songs: ArrayList<Song>){
-        queue.clear()
-        queue.addAll(songs)
-        queue.sortBy { song-> song.id }
         val fragmentChooseASongFragment = supportFragmentManager.findFragmentByTag("fragment_choose_a_song")
         if(fragmentChooseASongFragment != null && fragmentChooseASongFragment.isVisible){
-            val adapter = CustomQueueRecyclerViewAdapter(songs, fragmentChooseASongFragment?.context!!)
-            val recyclerView = (fragmentChooseASongFragment as ChooseASongFragment).view?.findViewById<RecyclerView>(R.id.recyclerViewQueue)
+            val adapter = (fragmentChooseASongFragment as ChooseASongFragment).view?.findViewById<RecyclerView>(R.id.recyclerViewQueue)?.adapter as CustomQueueRecyclerViewAdapter
             this.runOnUiThread {
-                recyclerView?.adapter = adapter
+                adapter.repopulateData(songs)
             }
+        }else{
+            queue.clear()
+            queue.addAll(songs)
+            queue.sortBy { song-> song.id }
         }
+
     }
 
     private fun settingQueueRepopulate(songs: ArrayList<Song>){
-        val fragmentSetting = supportFragmentManager.findFragmentByTag("fragment_settings")
+        var fragmentSetting = supportFragmentManager.findFragmentByTag("fragment_settings")
         if(fragmentSetting != null && fragmentSetting.isVisible){
+            fragmentSetting = fragmentSetting as SettingFragment
             val recyclerView = fragmentSetting.view?.findViewById<RecyclerView>(R.id.recyclerViewSetting)
             this.runOnUiThread {
-                (recyclerView?.adapter as CustomSettingRecyclerViewAdapter).repopulateData(songs)
+                fragmentSetting.readyStatus = false
+
+                fragmentSetting.readyStatus = (recyclerView?.adapter as CustomSettingRecyclerViewAdapter).repopulateData(songs)
+                Toast.makeText(this@MainActivity, "Playlist ready", Toast.LENGTH_SHORT).show()
             }
-        }else
+        }else{
+            queueSetting.clear()
             queueSetting.addAll(songs)
+            queueSetting.sortBy { song -> song.id }
+        }
     }
 
     private fun loadReferences(){
@@ -337,6 +448,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun settingLoadCurrentSong(song: Song){
+        val fragmentSettingFragment = supportFragmentManager.findFragmentByTag("fragment_settings")
+        if(fragmentSettingFragment != null && fragmentSettingFragment.isVisible){
+            val textViewSettingSongName = fragmentSettingFragment.view?.findViewById<TextView>(R.id.textViewSettingPlayingSong)
+            runOnUiThread { textViewSettingSongName?.text = song.name}
+            val textViewSettingTime = fragmentSettingFragment.view?.findViewById<TextView>(R.id.textViewSettingPlayingTime)
+            val minute = song.duration.toInt() / 60
+            val second = song.duration.toInt() % 60
+
+            if (second == 0)
+                runOnUiThread {  textViewSettingTime?.text = minute.toString() + ":00"}
+            else
+                runOnUiThread {  textViewSettingTime?.text = minute.toString() + ":" + second.toString()}
+        }
+    }
+
     companion object{
         val socket: Socket = IO.socket("http://192.168.0.3:5000/")
         var currentSong: String = ""
@@ -344,12 +471,14 @@ class MainActivity : AppCompatActivity() {
         var library = arrayListOf<Song>()
         var request = arrayListOf<Request>()
         var queueSetting = arrayListOf<Song>()
+        var queueActual = arrayListOf<Song>()
         var queueSize = 0
         var pinNumber = "None"
         var connectStatus = false
         var announcement = ""
         var idleInterval = 0
         var screenSaverAnimation = ""
+        var playingStatus = false
         const val preferencesStr = "squashlandReferences"
         const val announcementStr = "announcement"
         const val idleIntervalStr = "idleInterval"

@@ -5,60 +5,32 @@
     android:layout_width="match_parent"
     android:layout_height="80sp"
     android:background="@drawable/ripple"
-    android:clickable="true">
+    android:clickable="true"
+    android:paddingLeft="10sp"
+    android:paddingRight="10sp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <TextView
+        android:id="@+id/textViewSettingListSongName"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:fontFamily="@font/anton"
+        android:text="textView"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textViewSettingListIndex"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:fontFamily="@font/roboto_mono"
-            android:text="TextView"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:id="@+id/textViewSettingListSongName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:fontFamily="@font/roboto_mono"
-            android:text="textView"
-            android:textAlignment="center"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textViewSettingListTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:fontFamily="@font/roboto_mono"
-            android:maxWidth="400sp"
-            android:text="sdf"
-            android:textColor="@color/colorBlue"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textViewSettingListSongName"
-            app:layout_constraintTop_toBottomOf="@+id/textViewSettingListSongName" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <TextView
+        android:id="@+id/textViewSettingListTime"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:fontFamily="@font/anton"
+        android:maxWidth="400sp"
+        android:text="sdf"
+        android:textAlignment="viewEnd"
+        android:textColor="@color/colorBlue"
+        android:textSize="24sp" />
+
 </LinearLayout>

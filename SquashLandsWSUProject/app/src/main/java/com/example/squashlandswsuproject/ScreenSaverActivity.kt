@@ -34,5 +34,11 @@ class ScreenSaverActivity : AppCompatActivity() {
 
         textViewScreenSaverAnnouncement.text = MainActivity.announcement
         textViewScreenSaverAnnouncement.isSelected = true
+        MainActivity.socket.on("web modify mobile announcement text"){
+            val strAnnouncement = it[0].toString()
+            runOnUiThread {
+                textViewScreenSaverAnnouncement.text = strAnnouncement
+            }
+        }
     }
 }

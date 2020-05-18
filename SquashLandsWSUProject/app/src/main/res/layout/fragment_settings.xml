@@ -5,15 +5,93 @@
     android:layout_width="match_parent"
     android:layout_height="700sp">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="552dp"
+        android:layout_height="176dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="88dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageViewSettingLogo"
+            android:layout_width="179dp"
+            android:layout_height="156dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/squash_land_logo" />
+
+        <TextView
+            android:id="@+id/textViewSettingPlayingSong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/anton"
+            android:text="TextView"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="28sp"
+            app:layout_constraintStart_toEndOf="@+id/imageViewSettingLogo"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewSettingPlayingStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_marginBottom="14dp"
+            android:fontFamily="@font/anton"
+            android:text="Playing"
+            android:textColor="#608E0B"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/imageButtonSettingNext"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewSettingPlayingTime"
+            android:layout_width="104dp"
+            android:layout_height="38dp"
+            android:layout_marginStart="29dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="15dp"
+            android:fontFamily="@font/anton"
+            android:text="TextView"
+            android:textColor="@color/colorBlue"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/imageButtonSettingPlayStop"
+            app:layout_constraintStart_toEndOf="@+id/imageViewSettingLogo"
+            app:layout_constraintTop_toBottomOf="@+id/textViewSettingPlayingSong" />
+
+        <ImageButton
+            android:id="@+id/imageButtonSettingPlayStop"
+            android:layout_width="158dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageButtonSettingNext"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/imageViewSettingLogo"
+            app:srcCompat="@android:drawable/ic_media_play" />
+
+        <ImageButton
+            android:id="@+id/imageButtonSettingNext"
+            android:layout_width="158dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@android:drawable/ic_media_next" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewSetting"
-        android:layout_width="546sp"
-        android:layout_height="536sp"
-        android:layout_marginTop="91dp"
-        app:layout_constraintEnd_toStartOf="@+id/buttonSettingLoadDefault"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_width="552dp"
+        android:layout_height="350dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
 
     <Button
         android:id="@+id/buttonSubmitQueue"
@@ -21,19 +99,19 @@
         android:layout_height="51dp"
         android:layout_marginStart="36dp"
         android:layout_marginTop="9dp"
+        android:fontFamily="@font/anton"
         android:text="Apply"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerViewSetting" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="627dp"
+        android:id="@+id/constraintLayout3"
+        android:layout_width="628dp"
         android:layout_height="145dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="91dp"
-        android:layout_marginBottom="14dp"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-        app:layout_constraintStart_toEndOf="@+id/recyclerViewSetting"
+        android:layout_marginTop="88dp"
+        android:layout_marginEnd="34dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -41,7 +119,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:fontFamily="@font/roboto_mono"
+            android:fontFamily="@font/anton"
             android:text="Announcement"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="24sp"
@@ -50,15 +128,15 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:paddingTop="2sp"
             android:id="@+id/editTextSettingAnnouncement"
             android:layout_width="596dp"
             android:layout_height="52dp"
             android:layout_marginStart="16dp"
             android:ems="10"
-            android:fontFamily="@font/roboto_mono"
+            android:fontFamily="@font/anton"
             android:hint="scrolling announcement"
             android:inputType="textPersonName"
+            android:paddingTop="2sp"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -67,19 +145,19 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
-        android:layout_width="627dp"
-        android:layout_height="300dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginBottom="150dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/recyclerViewSetting">
+        android:layout_width="628dp"
+        android:layout_height="276dp"
+        android:layout_marginTop="45dp"
+        android:layout_marginEnd="34dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:fontFamily="@font/roboto_mono"
+            android:fontFamily="@font/anton"
             android:text="Idle Interval"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="24sp"
@@ -88,12 +166,14 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:paddingTop="2sp" android:id="@+id/editTextSettingIdleInterval"
-            android:layout_width="108dp"
-            android:layout_height="37dp"
+            android:id="@+id/editTextSettingIdleInterval"
+            android:layout_width="60dp"
+            android:layout_height="42dp"
             android:layout_marginStart="16dp"
             android:ems="10"
+            android:fontFamily="@font/anton"
             android:inputType="number"
+            android:paddingTop="2sp"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/textView"
             app:layout_constraintStart_toStartOf="parent"
@@ -104,7 +184,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginTop="20dp"
-            android:fontFamily="@font/roboto_mono"
+            android:fontFamily="@font/anton"
             android:text="minutes"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="18sp"
@@ -116,7 +196,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:fontFamily="@font/roboto_mono"
+            android:fontFamily="@font/anton"
             android:text="Screen Saver Animation"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="24sp"
@@ -137,7 +217,7 @@
                 android:id="@+id/radioButtonSettingScreenSaverRotation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_mono"
+                android:fontFamily="@font/anton"
                 android:text="Rotation"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp" />
@@ -146,7 +226,7 @@
                 android:id="@+id/radioButtonSettingScreenSaverPumping"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_mono"
+                android:fontFamily="@font/anton"
                 android:text="Pumping"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="16sp" />
@@ -156,23 +236,34 @@
     <Button
         android:id="@+id/buttonSettingLoadDefault"
         android:layout_width="296dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="32dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="35dp"
+        android:fontFamily="@font/anton"
         android:text="Load Default Settings"
         app:layout_constraintEnd_toStartOf="@+id/buttonSettingApply"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/recyclerViewSetting"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <Button
         android:id="@+id/buttonSettingApply"
         android:layout_width="296dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="33dp"
+        android:layout_height="105dp"
+        android:layout_marginEnd="34dp"
+        android:layout_marginBottom="13dp"
+        android:fontFamily="@font/anton"
         android:text="Apply New Settings"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buttonSettingLoadDefault"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/buttonSettingStatistic"
+        android:layout_width="296dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="35dp"
+        android:fontFamily="@font/anton"
+        android:text="Statistic"
+        app:layout_constraintEnd_toStartOf="@+id/buttonSettingApply"
+        app:layout_constraintTop_toBottomOf="@+id/buttonSettingLoadDefault" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

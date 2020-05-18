@@ -28,7 +28,7 @@
         android:layout_height="0dp"
         android:layout_marginBottom="369dp"
         android:background="@drawable/back_button"
-        android:fontFamily="@font/roboto_mono_medium"
+        android:fontFamily="@font/anton"
         android:text="Login"
         android:textColor="@color/colorText"
         app:layout_constraintBottom_toBottomOf="parent"

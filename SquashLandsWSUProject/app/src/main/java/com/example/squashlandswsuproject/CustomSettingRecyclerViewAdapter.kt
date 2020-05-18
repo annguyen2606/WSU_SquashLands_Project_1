@@ -12,7 +12,6 @@ import kotlin.collections.ArrayList
 class CustomSettingRecyclerViewAdapter(var songs: ArrayList<Song>, var context: Context): RecyclerView.Adapter<CustomSettingRecyclerViewAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         fun bindItem(song: Song, position: Int){
-            val textViewIndex = itemView.findViewById<TextView>(R.id.textViewSettingListIndex)
             val textViewSongName = itemView.findViewById<TextView>(R.id.textViewSettingListSongName)
             val textViewTime = itemView.findViewById<TextView>(R.id.textViewSettingListTime)
             val minute = song.duration.toInt() / 60
@@ -22,7 +21,6 @@ class CustomSettingRecyclerViewAdapter(var songs: ArrayList<Song>, var context: 
             else
                 textViewTime.text = "$minute:$second"
             textViewSongName.text = song.name
-            textViewIndex.text = "${position + 1}. "
         }
 
     }
@@ -44,6 +42,7 @@ class CustomSettingRecyclerViewAdapter(var songs: ArrayList<Song>, var context: 
     fun removeItem(position: Int) {
         songs.removeAt(position)
         notifyItemRemoved(position)
+        notifyItemRangeRemoved(position, songs.size)
         notifyItemRangeChanged(position, songs.size)
     }
 
@@ -67,10 +66,11 @@ class CustomSettingRecyclerViewAdapter(var songs: ArrayList<Song>, var context: 
         return songs[position]
     }
 
-    fun repopulateData(newSongs: ArrayList<Song>){
+    fun repopulateData(newSongs: ArrayList<Song>): Boolean{
         songs.clear()
         songs.addAll(newSongs)
         this.notifyDataSetChanged()
+        return true
     }
 
 }

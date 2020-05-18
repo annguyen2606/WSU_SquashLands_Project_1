@@ -7,9 +7,9 @@
     android:paddingBottom="25sp">
 
     <ImageView
-        android:id="@+id/imageViewQueueHeader"
-        android:layout_width="90dp"
-        android:layout_height="76dp"
+        android:id="@+id/imageViewSettingLogo"
+        android:layout_width="91dp"
+        android:layout_height="95dp"
         android:layout_marginStart="9dp"
         android:layout_marginTop="17dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,12 +17,12 @@
         app:srcCompat="@drawable/squash_land_logo" />
 
     <TextView
-        android:id="@+id/textViewQueueHeader"
+        android:id="@+id/textViewSettingPlayingSong"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="112dp"
         android:layout_marginTop="17dp"
-        android:fontFamily="@font/roboto_mono_medium"
+        android:fontFamily="@font/anton"
         android:text="TextView"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="32sp"
@@ -30,12 +30,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/textViewQueuePlayingStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="28dp"
         android:layout_marginBottom="36dp"
-        android:fontFamily="@font/roboto_mono_medium"
+        android:fontFamily="@font/anton"
         android:text="Playing"
         android:textColor="#608E0B"
         android:textSize="16sp"
@@ -43,13 +43,14 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
-        android:id="@+id/textViewPlayingTime"
+        android:id="@+id/textViewSettingPlayingTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="112dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/anton"
         android:text="TextView"
         android:textColor="@color/colorBlue"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewQueueHeader" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewSettingPlayingSong" />
 </androidx.constraintlayout.widget.ConstraintLayout>

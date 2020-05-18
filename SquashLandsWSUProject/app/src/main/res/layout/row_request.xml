@@ -8,7 +8,7 @@
         android:id="@+id/textViewRequestSongName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto_mono"
+        android:fontFamily="@font/anton"
         android:text="TextView"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="24sp"
@@ -18,7 +18,7 @@
         android:id="@+id/textViewRequestName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto_mono"
+        android:fontFamily="@font/anton"
         android:text="TextView"
         android:textColor="@color/colorBlue"
         android:textSize="16sp" />
