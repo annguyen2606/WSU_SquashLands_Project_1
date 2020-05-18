@@ -28,6 +28,23 @@
       });
 
     });
+    
+    
+    function modifyMobileAnnouncement() {
+        var mobileAnnouncementText = document.getElementById("mobileAnnouncement").value
+        $.ajax({
+
+            url:'/ChangeMobileAnnouncement/'+mobileAnnouncementText,
+            type:'get',
+            success: function(response){
+
+          $('#mobileAnnouncement').text(response);
+        }
+
+      });
+
+    }
+    
 
     function timeout() {
       location.href='/logout';
@@ -68,6 +85,12 @@
     .navbar {
       margin-bottom: 0;
       border-radius: 0;
+    }
+    
+    hr {
+    margin-top: 50px;
+    margin-bottom: 50px;
+
     }
 
     .navbar .navbar-brand img {
@@ -114,6 +137,11 @@
     footer button {
       width: 25%;
     }
+    
+    #mobileAnnouncement{
+        width: 300px;
+        height: 100px;
+    }
 
    @media screen and (max-width: 600px) {
 
@@ -142,9 +170,17 @@
         margin-top: 35%;
 
       }
+    
+       hr {
+    margin-top: 22px;
+    margin-bottom: 22px;
 
+    }
 
-
+    #mobileAnnouncement{
+        width: 300px;
+        height: 100px;
+    }
 
     }
 
@@ -193,6 +229,17 @@
         </button>
 
       {% endfor %}
+ 
+  </div>
+  <hr style="width: 80%">
+  <div>
+    <div>
+      <h1>Mobile Announcement Text</h1>
+      <br><br>
+        <textarea id="mobileAnnouncement" style="color: black; text-align: center;" value="{{mobileAnnouncementText}}">{{mobileAnnouncementText}}</textarea>
+      <br><br>
+
+      <button type="button" class="btn btn-info announButtons" onclick="modifyMobileAnnouncement()"><span>Submit</span></button>
  
   </div>
 </div>

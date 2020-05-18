@@ -15,7 +15,7 @@ class VLC:
 
     def start(self):
         subprocess.Popen([
-            'C:\\Program Files\\VideoLAN\\VLC\\vlc.exe',
+            'C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe',
             #Should be the directory of VLC
             #'C:\\Program Files\\VideoLAN\\VLC\\vlc.exe',
             '-I',
@@ -91,5 +91,9 @@ class VLC:
         response = requests.get('http://localhost:8080/requests/playlist.xml',
             params=params, auth=self.authentication)
         # print(json.dumps(xmltodict.parse(response.text), indent=4))
-
+    
+    def status(self):
+        response = requests.get('http://localhost:8080/requests/status.xml', auth=self.authentication)
+        response = xmltodict.parse(response.text)
+        return response
     

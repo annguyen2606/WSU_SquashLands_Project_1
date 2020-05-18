@@ -11,6 +11,7 @@ import random
 import threading
 import os
 import csv
+import re
 
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
@@ -34,6 +35,8 @@ bufferForPlaylist = []
 currentSong = ""
 
 queueSize = 5
+
+mobileAnnouncementText = "this taht "
 
 player = VLC.VLC()
 
@@ -59,6 +62,8 @@ def background():
     while True:
         queue = player.playlist(True)
         media = player.playlist(False)
+        status = player.status()
+        status = status['root']['state']
         if queue == "empty" or "@ro" in queue:
             # use random.shuffle() with media library and add to queue
             toBeShuffled = media
@@ -73,24 +78,33 @@ def background():
                     else:
                         player.add(song["@uri"])
                     if i == 3:
-                        time.sleep(2.5)
+                        time.sleep(1)
                         socketio.emit("sync for repopulated queue", player.playlist(True))
             global queueEmpty
             queueEmpty = True
-
-
+            
+            queue = queue = player.playlist(True)
+        socketio.emit('sync status', status)
         for song in player.playlist(True):
             if "@current" in song:
+                tmp = []
                 try:
                     if "@id" in song:
                         if (song['@id'] != currentSong) and (currentSong != ""):
                             player.remove(currentSong)
                             currentSong = song["@id"]
-                        socketio.emit("respond to sync", song['@uri'])
+                            tmp.append(song['@uri'])
+                        tmp.append(status)
+                        socketio.emit("respond to sync", tmp)
+                        
+                        if(status == 'stopped') and (re.search('/Video%20Announcements/', song['@uri']) != None):
+                            player.next()
                 except TypeError:
                     print(song)
                     print(currentSong)
-                    
+
+        
+    
 #Timer for Video Announcements
 def videoTimer():
     global videoAnnouncementTimer
@@ -104,34 +118,20 @@ def videoTimer():
 
     # Do function
     randVidAnnou()
+    
+    socketio.emit("sync for repopulated queue", player.playlist(True))
 
     #Restart timer
     videoTimer()
 
 # Queues up video announcement
 def randVidAnnou():
-
-    #if '@ro' not in queue:
-    #    for song in queue:
-    #        if "@current" not in song:
-    #            bufferForPlaylist.append(song['@uri'])
-    #            player.remove(song['@id'])
+ 
 
     random.shuffle(videoAnnouncements)
 
-    #annAlreadyQueue = False
-
-    #for song in bufferForPlaylist:
-    #    for announcement in videoAnnouncements:
-    #        if song == announcement:
-    #            annAlreadyQueue = True
-
-    #if annAlreadyQueue == False:
     player.add(videoAnnouncements[0])
-    #for song in bufferForPlaylist:
-    #    player.add(song)
-
-    #bufferForPlaylist.clear()
+    
 
 
 
@@ -500,13 +500,13 @@ def announcements():
         return redirect(url_for('index'))
 
     global videoAnnouncementTimer
+    global mobileAnnouncementText
 
-    return render_template('announcements.html', announcementVids=videoAnnouncements, videoAnnouncementTimer=videoAnnouncementTimer)
+    return render_template('announcements.html', announcementVids=videoAnnouncements, videoAnnouncementTimer=videoAnnouncementTimer, mobileAnnouncementText = mobileAnnouncementText)
 
 # Play emergency announcement
 @app.route('/Announcements/<announcement>')
 def playAnnouncement(announcement):
-
     if 'username' not in session:
         return redirect(url_for('index'))
 
@@ -826,6 +826,14 @@ def logout():
         session.pop('username', None)
     return redirect(url_for('index'))
 
+@app.route('/ChangeMobileAnnouncement/<newAnnouncement>')
+def web_change_mobile_announcement(newAnnouncement):
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    change_mobile_announcement_text(newAnnouncement)
+    socketio.emit('web modify mobile announcement text', newAnnouncement)
+    return newAnnouncement
+
 @socketio.on('sync library and queue')
 def respond_to_sync_library(data):
     print(data)
@@ -869,6 +877,8 @@ def add_song_to_queue(data):
         cur.execute("INSERT INTO [queued] (songName, queuer,[timeStamp]) VALUES (?,?,?)", (jsonObj["@name"], "Tablet", stamp) )
         con.commit()
     player.add(jsonObj["@uri"])
+    time.sleep(0.5)
+    socketio.emit("sync for repopulated queue", player.playlist(True))
     
 @socketio.on('add request from tablet')
 def add_request(data):
@@ -913,10 +923,37 @@ def tablet_modify_queue(data):
     socketio.emit("sync for repopulated queue", player.playlist(True))
     print("queue modified!")
     
+@socketio.on('tablet modify mobile announcement text')
+def change_mobile_announcement_text(data):
+    global mobileAnnouncementText
+    strTmp = str(data)
+    mobileAnnouncementText = strTmp
+    print(mobileAnnouncementText)
+    
+@socketio.on('request statistics log')
+def request_statistics_log():
+    with sql.connect('database.db') as con:
+                cur = con.cursor()
+                cur.execute("SELECT songName, queuer, strftime('%d-%m-%Y', timeStamp) as timeStamp FROM queued")
+                queueds = cur.fetchall()
+                tmp = []
+                for row in queueds:
+                    queued_as_dict = {'songName': row[0], 'queuer': row[1], 'timeStamp': row[2]}
+                    tmp.append(queued_as_dict)
+                jsonObj = json.dumps(tmp, ensure_ascii=False)
+    con.close()
+    socketio.emit("respond request statistic log", jsonObj)
+    
+@socketio.on('tablet request pause play')
+def tablet_request_pause():
+    pauseVLC()
+        
+@socketio.on('tablet request next')
+def tablet_request_pause():
+    nextVLC()
+    
 def exit_handler():
     print("Squashies Jukebox shutting down...")
-
-
     
 if __name__ == "__main__":
     # Checks if tables exist in db
