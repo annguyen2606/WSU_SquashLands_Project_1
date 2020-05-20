@@ -11,9 +11,17 @@ import kotlin.collections.ArrayList
 
 class CustomSettingRecyclerViewAdapter(var songs: ArrayList<Song>, var context: Context): RecyclerView.Adapter<CustomSettingRecyclerViewAdapter.ViewHolder>() {
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        fun bindItem(song: Song, position: Int){
+        fun bindItem(song: Song){
             val textViewSongName = itemView.findViewById<TextView>(R.id.textViewSettingListSongName)
             val textViewTime = itemView.findViewById<TextView>(R.id.textViewSettingListTime)
+            val textViewArtist = itemView.findViewById<TextView>(R.id.textViewSettingListArtist)
+
+            var uri = song.uri
+            var uriArray = uri.split(Regex("/Music%20Videos/"))
+            var fileName = uriArray[1].split(Regex("-"))
+            var artist = fileName[0].replace("%20", " ")
+            textViewArtist.text = artist
+
             val minute = song.duration.toInt() / 60
             val second = song.duration.toInt() % 60
             if(second == 0)
@@ -36,9 +44,10 @@ class CustomSettingRecyclerViewAdapter(var songs: ArrayList<Song>, var context: 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItem(songs[position], position)
+        holder.bindItem(songs[position])
     }
 
+    //Declare functions for items editing
     fun removeItem(position: Int) {
         songs.removeAt(position)
         notifyItemRemoved(position)

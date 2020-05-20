@@ -1,269 +1,298 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="700sp">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable name="time" type="com.example.squashlandswsuproject.CurrentTime"/>
+        <variable
+            name="artist"
+            type="com.example.squashlandswsuproject.CurrentArtist" />
+        <variable
+            name="currentProgress"
+            type="com.example.squashlandswsuproject.CurrentProgress" />
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout2"
-        android:layout_width="552dp"
-        android:layout_height="176dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="88dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_width="match_parent"
+        android:layout_height="700sp">
 
-        <ImageView
-            android:id="@+id/imageViewSettingLogo"
-            android:layout_width="179dp"
-            android:layout_height="156dp"
-            android:layout_marginTop="16dp"
+        <LinearLayout
+            android:id="@+id/constraintLayout2"
+            android:layout_width="579dp"
+            android:layout_height="200dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="88dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/squash_land_logo" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textViewSettingPlayingSong"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
-            android:layout_marginTop="20dp"
+            <ImageView
+                android:id="@+id/imageViewSettingLogo"
+                android:layout_width="162dp"
+                android:layout_height="match_parent"
+
+                app:srcCompat="@drawable/squash_land_logo" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textViewSettingPlayingSong"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:fontFamily="@font/anton"
+                    android:text="TextView"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="28sp" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/anton"
+                    android:text="@{artist.currentArtistStr}"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textViewSettingPlayingTime"
+                        android:layout_width="104dp"
+                        android:layout_height="38dp"
+                        android:fontFamily="@font/anton"
+                        android:text="@{time.timeStr}"
+                        android:textColor="@color/colorBlue"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/textViewSettingPlayingStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="38dp"
+                        android:fontFamily="@font/anton"
+                        android:text="Playing"
+                        android:textAlignment="viewEnd"
+                        android:textColor="#608E0B"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="@{currentProgress.maxSecond}"
+                    android:progress="@{currentProgress.currentSecond}" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/imageButtonSettingPlayStop"
+                        android:layout_width="207dp"
+                        android:layout_height="50dp"
+                        android:layout_marginBottom="4dp"
+                        android:src="@android:drawable/ic_media_play" />
+
+                    <ImageButton
+                        android:id="@+id/imageButtonSettingNext"
+                        android:layout_width="207dp"
+                        android:layout_height="50dp"
+                        android:layout_marginBottom="4dp"
+                        android:src="@android:drawable/ic_media_next" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewSetting"
+            android:layout_width="579dp"
+            android:layout_height="337dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+
+        <Button
+            android:id="@+id/buttonSubmitQueue"
+            android:layout_width="228dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="5dp"
             android:fontFamily="@font/anton"
-            android:text="TextView"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="28sp"
-            app:layout_constraintStart_toEndOf="@+id/imageViewSettingLogo"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:text="Apply"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewSetting" />
 
-        <TextView
-            android:id="@+id/textViewSettingPlayingStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:layout_marginBottom="14dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout3"
+            android:layout_width="585dp"
+            android:layout_height="151dp"
+            android:layout_marginTop="88dp"
+            android:layout_marginEnd="34dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/anton"
+                android:text="Announcement"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toTopOf="@+id/editTextSettingAnnouncement"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/editTextSettingAnnouncement"
+                android:layout_width="596dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="16dp"
+                android:ems="10"
+                android:fontFamily="@font/anton"
+                android:hint="scrolling announcement"
+                android:inputType="textPersonName"
+                android:paddingTop="2sp"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="582dp"
+            android:layout_height="304dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="34dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/anton"
+                android:text="Idle Interval"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toTopOf="@+id/editTextSettingIdleInterval"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/editTextSettingIdleInterval"
+                android:layout_width="60dp"
+                android:layout_height="42dp"
+                android:layout_marginStart="16dp"
+                android:ems="10"
+                android:fontFamily="@font/anton"
+                android:inputType="number"
+                android:paddingTop="2sp"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/textView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/anton"
+                android:text="minutes"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@+id/editTextSettingIdleInterval"
+                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/anton"
+                android:text="Screen Saver Animation"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toTopOf="@+id/radioGroup"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editTextSettingIdleInterval" />
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="144dp"
+                android:layout_height="92dp"
+                android:layout_marginStart="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                <RadioButton
+                    android:id="@+id/radioButtonSettingScreenSaverRotation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/anton"
+                    android:text="Rotation"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp" />
+
+                <RadioButton
+                    android:id="@+id/radioButtonSettingScreenSaverPumping"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/anton"
+                    android:text="Pumping"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="16sp" />
+            </RadioGroup>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/buttonSettingLoadDefault"
+            android:layout_width="255dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="24dp"
             android:fontFamily="@font/anton"
-            android:text="Playing"
-            android:textColor="#608E0B"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/imageButtonSettingNext"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:text="Load Default Settings"
+            app:layout_constraintEnd_toStartOf="@+id/buttonSettingApply"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
-        <TextView
-            android:id="@+id/textViewSettingPlayingTime"
-            android:layout_width="104dp"
-            android:layout_height="38dp"
-            android:layout_marginStart="29dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="15dp"
+        <Button
+            android:id="@+id/buttonSettingApply"
+            android:layout_width="305dp"
+            android:layout_height="118dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="34dp"
+            android:layout_marginBottom="13dp"
             android:fontFamily="@font/anton"
-            android:text="TextView"
-            android:textColor="@color/colorBlue"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/imageButtonSettingPlayStop"
-            app:layout_constraintStart_toEndOf="@+id/imageViewSettingLogo"
-            app:layout_constraintTop_toBottomOf="@+id/textViewSettingPlayingSong" />
-
-        <ImageButton
-            android:id="@+id/imageButtonSettingPlayStop"
-            android:layout_width="158dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="4dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageButtonSettingNext"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/imageViewSettingLogo"
-            app:srcCompat="@android:drawable/ic_media_play" />
-
-        <ImageButton
-            android:id="@+id/imageButtonSettingNext"
-            android:layout_width="158dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="4dp"
+            android:text="Apply New Settings"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@android:drawable/ic_media_next" />
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+        <Button
+            android:id="@+id/buttonSettingStatistic"
+            android:layout_width="255dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="@font/anton"
+            android:text="Statistic"
+            app:layout_constraintEnd_toStartOf="@+id/buttonSettingApply"
+            app:layout_constraintTop_toBottomOf="@+id/buttonSettingLoadDefault" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewSetting"
-        android:layout_width="552dp"
-        android:layout_height="350dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="12dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
-
-    <Button
-        android:id="@+id/buttonSubmitQueue"
-        android:layout_width="228dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="9dp"
-        android:fontFamily="@font/anton"
-        android:text="Apply"
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerViewSetting" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout3"
-        android:layout_width="628dp"
-        android:layout_height="145dp"
-        android:layout_marginTop="88dp"
-        android:layout_marginEnd="34dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/anton"
-            android:text="Announcement"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/editTextSettingAnnouncement"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/editTextSettingAnnouncement"
-            android:layout_width="596dp"
-            android:layout_height="52dp"
-            android:layout_marginStart="16dp"
-            android:ems="10"
-            android:fontFamily="@font/anton"
-            android:hint="scrolling announcement"
-            android:inputType="textPersonName"
-            android:paddingTop="2sp"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="628dp"
-        android:layout_height="276dp"
-        android:layout_marginTop="45dp"
-        android:layout_marginEnd="34dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout3">
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/anton"
-            android:text="Idle Interval"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/editTextSettingIdleInterval"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/editTextSettingIdleInterval"
-            android:layout_width="60dp"
-            android:layout_height="42dp"
-            android:layout_marginStart="16dp"
-            android:ems="10"
-            android:fontFamily="@font/anton"
-            android:inputType="number"
-            android:paddingTop="2sp"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/textView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/anton"
-            android:text="minutes"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="18sp"
-            app:layout_constraintStart_toEndOf="@+id/editTextSettingIdleInterval"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:fontFamily="@font/anton"
-            android:text="Screen Saver Animation"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/radioGroup"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextSettingIdleInterval" />
-
-        <RadioGroup
-            android:id="@+id/radioGroup"
-            android:layout_width="144dp"
-            android:layout_height="92dp"
-            android:layout_marginStart="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView">
-
-            <RadioButton
-                android:id="@+id/radioButtonSettingScreenSaverRotation"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/anton"
-                android:text="Rotation"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="16sp" />
-
-            <RadioButton
-                android:id="@+id/radioButtonSettingScreenSaverPumping"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/anton"
-                android:text="Pumping"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="16sp" />
-        </RadioGroup>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <Button
-        android:id="@+id/buttonSettingLoadDefault"
-        android:layout_width="296dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="35dp"
-        android:fontFamily="@font/anton"
-        android:text="Load Default Settings"
-        app:layout_constraintEnd_toStartOf="@+id/buttonSettingApply"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
-
-    <Button
-        android:id="@+id/buttonSettingApply"
-        android:layout_width="296dp"
-        android:layout_height="105dp"
-        android:layout_marginEnd="34dp"
-        android:layout_marginBottom="13dp"
-        android:fontFamily="@font/anton"
-        android:text="Apply New Settings"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/buttonSettingStatistic"
-        android:layout_width="296dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="35dp"
-        android:fontFamily="@font/anton"
-        android:text="Statistic"
-        app:layout_constraintEnd_toStartOf="@+id/buttonSettingApply"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSettingLoadDefault" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -22,10 +22,11 @@ class StatisticFragment: Fragment(R.layout.fragment_statistic) {
     var logoutHandler = Handler()
     lateinit var runnableLogout: Runnable
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
         val buttonBack = activity?.findViewById<Button>(R.id.buttonBack)
         buttonBack?.visibility = Button.VISIBLE
         MainActivity.socket.emit("request statistics log")
+
+        //get statistic logs from server, when finish set statusflag to true
         MainActivity.socket.on("respond request statistic log"){
             JsonReader(StringReader(it[0].toString())).use { reader ->
                 reader.beginArray {
@@ -61,6 +62,8 @@ class StatisticFragment: Fragment(R.layout.fragment_statistic) {
         recyclerViewStatistic.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
 
         buttonLoad.setOnClickListener {
+
+            //check if statistic log is ready; if ready init adapter and assign it to recycler view
             if (statusFlag) {
                 it.visibility = Button.INVISIBLE
                 val adapterNormal = CustomStatisticRecyclerViewAdapter(queueds,view.context,0,null)
@@ -73,7 +76,10 @@ class StatisticFragment: Fragment(R.layout.fragment_statistic) {
         }
 
 
+        //control on toggle buttons
         toggleButton.setOnClickListener {
+            //type 0 is normal statistic, type 1 is count statistic
+            //isSongStats = true -> count by song, isSongStat = false -> count by date
             if (toggleButton.isChecked) {
                 radioGroup.visibility = RadioGroup.VISIBLE
                 if(radioButtonPopDateMode.isChecked){
@@ -90,14 +96,14 @@ class StatisticFragment: Fragment(R.layout.fragment_statistic) {
             }
         }
 
-        radioButtonPopSongMode.setOnCheckedChangeListener { compoundButton, b ->
+        radioButtonPopSongMode.setOnCheckedChangeListener { compoundButton,_ ->
             if (compoundButton.isChecked){
                 val adapterPopSong = CustomStatisticRecyclerViewAdapter(queueds, view.context, 1, true)
                 recyclerViewStatistic.adapter = adapterPopSong
             }
         }
 
-        radioButtonPopDateMode.setOnCheckedChangeListener { compoundButton, b ->
+        radioButtonPopDateMode.setOnCheckedChangeListener { compoundButton, _ ->
             if (compoundButton.isChecked){
                 val adapterPopDate = CustomStatisticRecyclerViewAdapter(queueds, view.context, 1, false)
                 recyclerViewStatistic.adapter = adapterPopDate

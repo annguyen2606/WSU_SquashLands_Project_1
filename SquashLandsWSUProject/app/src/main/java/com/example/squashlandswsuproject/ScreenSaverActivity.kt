@@ -40,5 +40,11 @@ class ScreenSaverActivity : AppCompatActivity() {
                 textViewScreenSaverAnnouncement.text = strAnnouncement
             }
         }
+
+        MainActivity.socket.on("broadcast modified announcement"){
+            runOnUiThread {
+                textViewScreenSaverAnnouncement.text = it[0].toString()
+            }
+        }
     }
 }

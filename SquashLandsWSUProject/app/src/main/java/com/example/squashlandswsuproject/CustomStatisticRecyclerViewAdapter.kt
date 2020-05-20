@@ -9,8 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 
 class CustomStatisticRecyclerViewAdapter(var queueds: ArrayList<Queued>, var context: Context, var type: Int, var isSongStats: Boolean?):
     RecyclerView.Adapter<CustomStatisticRecyclerViewAdapter.ViewHolder>() {
+
+    //private values for item type
     private val type_header = 0
     private val type_item = 1
+
+    //private lists after performing counting on 'queueds'
     private val songPopularity = queueds.groupingBy { it.songName }.eachCount().toList().sortedBy { it.second }.reversed()
     private val datePopularity = queueds.groupingBy { it.timeStamp }.eachCount().toList().sortedBy { it.second }.reversed()
 
@@ -69,6 +73,8 @@ class CustomStatisticRecyclerViewAdapter(var queueds: ArrayList<Queued>, var con
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+
+        //if type is 0 inflate normal layout; else inflate header and popularity layouts
         return if (type == 0)
             ViewHolder(LayoutInflater.from(context).inflate(R.layout.row_statistic_item_normal, parent, false))
         else{
@@ -84,6 +90,7 @@ class CustomStatisticRecyclerViewAdapter(var queueds: ArrayList<Queued>, var con
     }
 
     override fun getItemCount(): Int {
+        //as if type == 1 there will be header, size needs to be +1
         return if(type == 1){
             if (isSongStats!!)
                 songPopularity.size + 1
@@ -95,6 +102,7 @@ class CustomStatisticRecyclerViewAdapter(var queueds: ArrayList<Queued>, var con
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        //if type == 1 perform normal binding; else, at first position, perform header binding and perform counting item binding in next positions
         if(type == 0)
             holder.bindItem(queueds[position])
         else{

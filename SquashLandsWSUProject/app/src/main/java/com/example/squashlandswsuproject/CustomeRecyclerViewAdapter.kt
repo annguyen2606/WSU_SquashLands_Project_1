@@ -8,13 +8,25 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-
+//pass ArrayList, Context, and onclicklistener which is declared from fragment
 class CustomRecyclerViewAdapter(var songs: ArrayList<Song>, var context: Context, private val clickListener: (Song) -> Unit): RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder>(), Filterable {
     private var songsNotFiltered : ArrayList<Song> = ArrayList(songs)
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindItems(song: Song, clickListener: (Song) -> Unit) {
             val textViewSongItemName = itemView.findViewById<TextView>(R.id.songItemName)
             val textViewSongItemDuration = itemView.findViewById<TextView>(R.id.songItemDuration)
+            val textViewSongItemArtist = itemView.findViewById<TextView>(R.id.songItemArtist)
+
+            //extract artist name from uri string
+            var uri = song.uri
+            var uriArray = uri.split(Regex("/Music%20Videos/"))
+            var fileName = uriArray[1].split(Regex("-"))
+            var artist = fileName[0].replace("%20", " ")
+
+
+            textViewSongItemArtist.text = artist
+
+            //extract minute and second numbers from duration string
             val minute = song.duration.toInt() / 60
             val second = song.duration.toInt() % 60
 
@@ -23,6 +35,8 @@ class CustomRecyclerViewAdapter(var songs: ArrayList<Song>, var context: Context
             else
                 textViewSongItemDuration.text = minute.toString() + ":" + second.toString()
             textViewSongItemName.text = song.name
+
+            //set onClickListener for the itemView
             itemView.setOnClickListener {
                 clickListener(song)
             }
@@ -41,9 +55,6 @@ class CustomRecyclerViewAdapter(var songs: ArrayList<Song>, var context: Context
         holder.bindItems(songs[position], clickListener)
     }
 
-    fun getSongUri(position: Int): String{
-        return songs[position].uri
-    }
 
     override fun getFilter(): Filter {
         return songFilter
@@ -68,7 +79,7 @@ class CustomRecyclerViewAdapter(var songs: ArrayList<Song>, var context: Context
 
         override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
             songs.clear()
-            songs.addAll(p1?.values as ArrayList<Song>)
+            songs.addAll(p1!!.values as ArrayList<Song>)
             notifyDataSetChanged()
         }
     }

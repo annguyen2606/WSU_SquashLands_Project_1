@@ -5,9 +5,11 @@ import android.content.Context.MODE_PRIVATE
 import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
+import android.renderscript.ScriptGroup
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,12 +18,14 @@ import android.view.animation.LinearInterpolator
 import android.widget.*
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AlertDialog
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.beust.klaxon.Klaxon
+import com.example.squashlandswsuproject.databinding.FragmentSettingsBinding
 import kotlinx.android.synthetic.main.fragment_request_songs.*
 import kotlinx.android.synthetic.main.fragment_settings.*
 import java.util.*
@@ -37,11 +41,18 @@ class SettingFragment: Fragment(R.layout.fragment_settings) {
     lateinit var recyclerView: RecyclerView
     lateinit var runnableLogout: Runnable
     var readyStatus = true
+    lateinit var binding: FragmentSettingsBinding
+
+    var currentTime = CurrentTime(MainActivity.time)
+    var currentArtist = CurrentArtist(MainActivity.currentArtist)
+    var currentProgress = CurrentProgress(MainActivity.currentProgress, MainActivity.currentMaxSecond)
+
     lateinit var editTextAnnouncement: EditText
     lateinit var editTextIdleInterval: EditText
     lateinit var radioButtonRotation: RadioButton
     lateinit var radioButtonPumping: RadioButton
     lateinit var sharedReferencesEditor: SharedPreferences.Editor
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val buttonBack = activity?.findViewById<Button>(R.id.buttonBack)
         buttonBack?.visibility = Button.VISIBLE
@@ -54,7 +65,15 @@ class SettingFragment: Fragment(R.layout.fragment_settings) {
                 buttonBack?.visibility = Button.INVISIBLE
             }
         }
-        return super.onCreateView(inflater, container, savedInstanceState)
+
+        //initiate binding and data variables
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false)
+        val view = binding.root
+        binding.time = currentTime
+        binding.artist = currentArtist
+        binding.currentProgress = currentProgress
+        binding.lifecycleOwner = this
+        return view
     }
 
     @SuppressLint("CommitPrefEdits")
@@ -65,41 +84,52 @@ class SettingFragment: Fragment(R.layout.fragment_settings) {
         recyclerView.adapter = recyclerViewAdapter
         recyclerView.addItemDecoration(DividerItemDecoration(view.context, DividerItemDecoration.VERTICAL))
         recyclerView.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
+
+        //declare ItemTouchHelper variable and attach it to recycler view
         val itemTouchHelper = ItemTouchHelper(createItemTouchHelper()!!)
         itemTouchHelper.attachToRecyclerView(recyclerView)
+
 
         val imageSettingLogo = view.findViewById<ImageView>(R.id.imageViewSettingLogo)
         val rotation = AnimationUtils.loadAnimation(view.context,R.anim.rotate)
         rotation.interpolator = LinearInterpolator()
         rotation.fillAfter = true
 
+        //not decide what to put in here yet leave it for extension
         recyclerView.addOnItemTouchListener(CustomRecyclerViewOnItemTouchListener(activity, recyclerView, object : ClickListener {
             override fun onClick(view: View?, position: Int) {
-
+            //TODO
             }
 
             override fun onClickUp(view: View?, position: Int) {
-
+            //TODO
             }
 
             override fun onLongClick(view: View?, position: Int) {
-
+            //TODO
             }
         })
         )
 
+
         buttonSubmitQueue.setOnClickListener {
+
             val jsonObj = Klaxon().toJsonString(recyclerViewAdapter.songs)
             MainActivity.socket.emit("modify queue", jsonObj)
+
+            //queueSettingTmp is like a flag to track if queue is modified or not
             queueSettingTmp.clear()
             queueSettingTmp.addAll(recyclerViewAdapter.songs)
             buttonSubmitQueue.visibility = Button.INVISIBLE
             Toast.makeText(view.context,"Queue Modified Successfully", Toast.LENGTH_LONG).show()
         }
+
+
         editTextAnnouncement = view.findViewById<EditText>(R.id.editTextSettingAnnouncement)
         editTextIdleInterval = view.findViewById<EditText>(R.id.editTextSettingIdleInterval)
         val textViewSettingPlayingSong = view.findViewById<TextView>(R.id.textViewSettingPlayingSong)
         val textViewSettingPlayingTime = view.findViewById<TextView>(R.id.textViewSettingPlayingTime)
+        val textViewSettingStatus = view.findViewById<TextView>(R.id.textViewSettingPlayingStatus)
         radioButtonRotation = view.findViewById<RadioButton>(R.id.radioButtonSettingScreenSaverRotation)
         radioButtonPumping = view.findViewById<RadioButton>(R.id.radioButtonSettingScreenSaverPumping)
         val buttonSettingApply = view.findViewById<Button>(R.id.buttonSettingApply)
@@ -109,27 +139,25 @@ class SettingFragment: Fragment(R.layout.fragment_settings) {
         val buttonSettingPlayStop = view.findViewById<ImageButton>(R.id.imageButtonSettingPlayStop)
         val buttonSettingNext = view.findViewById<ImageButton>(R.id.imageButtonSettingNext)
 
+        //set initial animation for the logo
         if(MainActivity.playingStatus) {
             buttonSettingPlayStop.setImageResource(android.R.drawable.ic_media_pause)
-            imageSettingLogo.animation = rotation
-            rotation.start()
-        }else
+            imageSettingLogo.startAnimation(rotation)
+        }else{
             buttonSettingPlayStop.setImageResource(android.R.drawable.ic_media_play)
+            textViewSettingStatus.text = "Paused"
+            textViewSettingStatus.setTextColor(Color.parseColor("#FF7F11"))
+        }
+
+        //set initial text for current song
         val currentSong = MainActivity.queue.minBy { it.id }
         textViewSettingPlayingSong.text = currentSong?.name
-
-        val minute = currentSong?.duration!!.toInt() / 60
-        val second = currentSong?.duration!!.toInt() % 60
-
-        if (second == 0)
-            textViewSettingPlayingTime.text = minute.toString() + ":00"
-        else
-            textViewSettingPlayingTime?.text = minute.toString() + ":" + second.toString()
 
         buttonSettingApply.setOnClickListener {
             saveSettings()
         }
 
+        //set default values when click on load default button
         buttonSettingLoadDefault.setOnClickListener {
             editTextAnnouncement.setText(resources.getText(R.string.default_announcement))
             editTextIdleInterval.setText("2")
@@ -150,8 +178,13 @@ class SettingFragment: Fragment(R.layout.fragment_settings) {
         else if(MainActivity.screenSaverAnimation.contentEquals("Pumping"))
             radioButtonPumping.isChecked = true
 
+        //set socket emitting when clicking on play/pause and next buttons
         buttonSettingPlayStop.setOnClickListener {
-                MainActivity.socket.emit("tablet request pause play")
+            if(MainActivity.playingStatus)
+                imageSettingLogo.clearAnimation()
+            else
+                imageSettingLogo.startAnimation(rotation)
+            MainActivity.socket.emit("tablet request pause play")
         }
 
         buttonSettingNext.setOnClickListener {
@@ -212,6 +245,7 @@ class SettingFragment: Fragment(R.layout.fragment_settings) {
         super.onDestroy()
     }
 
+    //declare ItemTouchHelper
     private fun createItemTouchHelper(): ItemTouchHelper.Callback? {
         return object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,

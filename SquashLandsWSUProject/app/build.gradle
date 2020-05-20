@@ -6,6 +6,9 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
+    dataBinding.enabled = true
+    apply plugin: "kotlin-kapt"
+
     defaultConfig {
         applicationId "com.example.squashlandswsuproject"
         minSdkVersion 28
@@ -22,6 +25,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+
 
 }
 

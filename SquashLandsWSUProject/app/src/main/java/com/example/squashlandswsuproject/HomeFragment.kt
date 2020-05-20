@@ -38,6 +38,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val buttonRequestASong = view.findViewById<Button>(R.id.buttonRequestNewSong)
 
         textViewPlayingSong = view.findViewById<TextView>(R.id.textViewPlayingSong)
+
+        //declare text box appears if socket is not connected
         alertDialogNotConnected.setCancelable(true)
         alertDialogNotConnected.setTitle("The app is not connected")
         alertDialogNotConnected.setMessage("Try to connect")
@@ -64,6 +66,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         if(!MainActivity.socket.connected())
             alertDialogNotConnected.show()
+
         buttonRequestASong.setOnClickListener {
             if(MainActivity.connectStatus){
                 val supportFragmentManagerTmp = this.fragmentManager
@@ -93,10 +96,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-
-        super.onViewStateRestored(savedInstanceState)
-    }
 
     override fun onResume() {
         textViewPlayingSong.text = currentSongTmp

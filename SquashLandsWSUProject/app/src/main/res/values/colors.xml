@@ -14,4 +14,5 @@
     <color name="colorYellow">#FFB900</color>
     <color name="colorBlack">#000000</color>
     <color name="colorGray">#C0C0C0</color>
+    <color name="colorPlaying">#608E0B</color>
 </resources>
