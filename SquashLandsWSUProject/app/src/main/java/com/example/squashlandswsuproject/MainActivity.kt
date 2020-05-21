@@ -114,7 +114,8 @@ class MainActivity : AppCompatActivity() {
                 it.beginArray {
                     while (it.hasNext()){
                         val song = Klaxon().parse<Song>(it) as Song
-                        library.add(song)
+                        val songWithArtist = SongWithArtist(song)
+                        library.add(songWithArtist)
                     }
                 }
             }
@@ -171,7 +172,6 @@ class MainActivity : AppCompatActivity() {
 
                                     //set 'current' variables
                                     currentSong = currentSongTmp.name
-                                    currentMaxSecond = currentSongTmp.duration.toInt()
                                     var uriTmp = currentSongTmp.uri
                                     var uriArray = uriTmp.split(Regex("/Music%20Videos/"))
                                     var fileName = uriArray.get(1).split(Regex("-"))
@@ -186,6 +186,7 @@ class MainActivity : AppCompatActivity() {
                                 }
                                 settingLoadCurrentSong(currentSongTmp)
                             }
+                            currentMaxSecond = currentSongTmp.duration.toInt()
                             //remove song from actual queue
                             queueActual.remove(queueActual.minBy { song -> song.id })
                         }
@@ -609,7 +610,7 @@ class MainActivity : AppCompatActivity() {
         val socket: Socket = IO.socket("http://192.168.0.3:5000/")
         var currentSong: String = ""
         var queue =  arrayListOf<Song>()
-        var library = arrayListOf<Song>()
+        var library = arrayListOf<SongWithArtist>()
         var request = arrayListOf<Request>()
         var queueSetting = arrayListOf<Song>()
         var queueActual = arrayListOf<Song>()

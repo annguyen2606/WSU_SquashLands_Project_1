@@ -9,16 +9,17 @@ import android.widget.Filterable
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 //pass ArrayList, Context, and onclicklistener which is declared from fragment
-class CustomRecyclerViewAdapter(var songs: ArrayList<Song>, var context: Context, private val clickListener: (Song) -> Unit): RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder>(), Filterable {
-    private var songsNotFiltered : ArrayList<Song> = ArrayList(songs)
+class CustomRecyclerViewAdapter(var songs: ArrayList<SongWithArtist>, var context: Context, private val clickListener: (SongWithArtist) -> Unit): RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder>(), Filterable {
+    private var songsNotFiltered : ArrayList<SongWithArtist> = ArrayList(songs)
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bindItems(song: Song, clickListener: (Song) -> Unit) {
+        fun bindItems(song: SongWithArtist, clickListener: (SongWithArtist) -> Unit) {
             val textViewSongItemName = itemView.findViewById<TextView>(R.id.songItemName)
             val textViewSongItemDuration = itemView.findViewById<TextView>(R.id.songItemDuration)
             val textViewSongItemArtist = itemView.findViewById<TextView>(R.id.songItemArtist)
 
             //extract artist name from uri string
-            var uri = song.uri
+            var uri = song.song.uri
             var uriArray = uri.split(Regex("/Music%20Videos/"))
             var fileName = uriArray[1].split(Regex("-"))
             var artist = fileName[0].replace("%20", " ")
@@ -27,14 +28,14 @@ class CustomRecyclerViewAdapter(var songs: ArrayList<Song>, var context: Context
             textViewSongItemArtist.text = artist
 
             //extract minute and second numbers from duration string
-            val minute = song.duration.toInt() / 60
-            val second = song.duration.toInt() % 60
+            val minute = song.song.duration.toInt() / 60
+            val second = song.song.duration.toInt() % 60
 
             if (second == 0)
                 textViewSongItemDuration.text = minute.toString() + ":00"
             else
                 textViewSongItemDuration.text = minute.toString() + ":" + second.toString()
-            textViewSongItemName.text = song.name
+            textViewSongItemName.text = song.song.name
 
             //set onClickListener for the itemView
             itemView.setOnClickListener {
@@ -62,13 +63,13 @@ class CustomRecyclerViewAdapter(var songs: ArrayList<Song>, var context: Context
 
     private var songFilter: Filter = object : Filter() {
         override fun performFiltering(p0: CharSequence?): FilterResults {
-            var filteredSong = ArrayList<Song>()
+            var filteredSong = ArrayList<SongWithArtist>()
             if (p0 == null || p0.length ==0){
                 filteredSong.addAll(songsNotFiltered)
             }else{
                 val strQueryPattern = p0.toString().toLowerCase().trim()
                 songsNotFiltered.forEach {
-                    if (it.name.toLowerCase().contains(strQueryPattern))
+                    if (it.song.name.toLowerCase().contains(strQueryPattern) || it.artist.toLowerCase().contains(strQueryPattern))
                         filteredSong.add(it)
                 }
             }
@@ -79,7 +80,7 @@ class CustomRecyclerViewAdapter(var songs: ArrayList<Song>, var context: Context
 
         override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
             songs.clear()
-            songs.addAll(p1!!.values as ArrayList<Song>)
+            songs.addAll(p1!!.values as ArrayList<SongWithArtist>)
             notifyDataSetChanged()
         }
     }

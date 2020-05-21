@@ -40,7 +40,7 @@ class ChooseASongFragment : Fragment(R.layout.fragment_choose_a_song){
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        val libTmp: ArrayList<Song> = ArrayList(MainActivity.library)
+        val libTmp: ArrayList<SongWithArtist> = ArrayList(MainActivity.library)
         val recyclerViewQueue = view.findViewById<RecyclerView>(R.id.recyclerViewQueue)
         val recyclerViewLib = view.findViewById<RecyclerView>(R.id.recyclerView)
 
@@ -75,10 +75,10 @@ class ChooseASongFragment : Fragment(R.layout.fragment_choose_a_song){
     }
 
     //set onClick listener for library recycler view
-    private fun onSongClick(song: Song) {
+    private fun onSongClick(song: SongWithArtist) {
         val alertDialogNotConnected: AlertDialog.Builder = AlertDialog.Builder(this.context!!)
         alertDialogNotConnected.setCancelable(true)
-        alertDialogNotConnected.setTitle("I want to play " + song.name + "!")
+        alertDialogNotConnected.setTitle("I want to play " + song.song.name + "!")
         alertDialogNotConnected.setMessage("Are you sure?")
         alertDialogNotConnected.setNegativeButton("No",
             DialogInterface.OnClickListener { dialogInterface, _ ->
@@ -87,31 +87,31 @@ class ChooseASongFragment : Fragment(R.layout.fragment_choose_a_song){
         alertDialogNotConnected.setPositiveButton("Yes", DialogInterface.OnClickListener { _, _->
             if(MainActivity.queue.size >= MainActivity.queueSize){
                 Toast.makeText(this.context,"Queue is full! There should be only ${MainActivity.queueSize} songs in queue",Toast.LENGTH_LONG).show()
-            }else if(MainActivity.queue.size < MainActivity.queueSize && MainActivity.queueActual.find{ it.uri == song.uri} == null) {
+            }else if(MainActivity.queue.size < MainActivity.queueSize && MainActivity.queueActual.find{ it.uri == song.song.uri} == null) {
                 //assign ID for the new song
-                song.id = ((MainActivity.queueActual.maxBy { it.id }?.id?.toInt())!! + 1).toString()
+                song.song.id = ((MainActivity.queueActual.maxBy { it.id }?.id?.toInt())!! + 1).toString()
                 val recyclerViewQueue = this.view?.findViewById<RecyclerView>(R.id.recyclerViewQueue)
 
                 //add the song to the setting queue
-                MainActivity.queueSetting.add(song)
+                MainActivity.queueSetting.add(song.song)
 
                 val adapter = recyclerViewQueue?.adapter as CustomQueueRecyclerViewAdapter
 
                 //add song to MainActivity.queue by addItem() method of adapter
-                adapter.addItem(song)
+                adapter.addItem(song.song)
 
                 //cast song as JSON string
-                val jsonString = Klaxon().toJsonString(song)
+                val jsonString = Klaxon().toJsonString(song.song)
 
                 //socket fire event with payload is jsonString
                 MainActivity.socket.emit("add song to queue from tablet", jsonString )
 
                 //add song to actual playlist
-                MainActivity.queueActual.add(song)
+                MainActivity.queueActual.add(song.song)
 
-                Toast.makeText(this.context, "Added ${song.name} to the queue",Toast.LENGTH_SHORT).show()
-            }else if(MainActivity.queue.size < MainActivity.queueSize && MainActivity.queue.find{ it.uri == song.uri} != null){
-                Toast.makeText(this.context,"The song \"${song.name}\" already exists in the queue",Toast.LENGTH_LONG).show()
+                Toast.makeText(this.context, "Added ${song.song.name} to the queue",Toast.LENGTH_SHORT).show()
+            }else if(MainActivity.queue.size < MainActivity.queueSize && MainActivity.queue.find{ it.uri == song.song.uri} != null){
+                Toast.makeText(this.context,"The song \"${song.song.name}\" already exists in the queue",Toast.LENGTH_LONG).show()
             }
 
             //clear query string on search view and clear the focus
