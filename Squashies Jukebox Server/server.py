@@ -63,7 +63,10 @@ def background():
         queue = player.playlist(True)
         media = player.playlist(False)
         status = player.status()
-        status = status['root']['state']
+        state = status['root']['state']
+        timeStr = status['root']['time']
+        dictTmp = [state, timeStr]
+        socketio.emit('sync status', dictTmp)
         if queue == "empty" or "@ro" in queue:
             # use random.shuffle() with media library and add to queue
             toBeShuffled = media
@@ -84,7 +87,6 @@ def background():
             queueEmpty = True
             
             queue = queue = player.playlist(True)
-        socketio.emit('sync status', status)
         for song in player.playlist(True):
             if "@current" in song:
                 tmp = []
@@ -905,7 +907,7 @@ def remove_song_from_queue(data):
         if jsonObj["@id"] == song["@id"]:
             player.remove(jsonObj["@id"])
             print("remove " + jsonObj["@name"])
-            socketio.emit("removed song from queue", jsonObj["@id"])
+    socketio.emit("removed song from queue", jsonObj["@id"])
             
 @socketio.on('modify queue')
 def tablet_modify_queue(data):
@@ -919,7 +921,7 @@ def tablet_modify_queue(data):
     
     for song in newQueueTmp:
         player.add(song["@uri"])
-    time.sleep(3)
+    time.sleep(1)
     socketio.emit("sync for repopulated queue", player.playlist(True))
     print("queue modified!")
     
@@ -929,6 +931,7 @@ def change_mobile_announcement_text(data):
     strTmp = str(data)
     mobileAnnouncementText = strTmp
     print(mobileAnnouncementText)
+    socketio.emit("broadcast modified announcement", strTmp)
     
 @socketio.on('request statistics log')
 def request_statistics_log():
@@ -951,6 +954,7 @@ def tablet_request_pause():
 @socketio.on('tablet request next')
 def tablet_request_pause():
     nextVLC()
+    
     
 def exit_handler():
     print("Squashies Jukebox shutting down...")
