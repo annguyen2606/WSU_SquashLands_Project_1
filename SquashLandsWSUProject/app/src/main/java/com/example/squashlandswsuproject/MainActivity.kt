@@ -292,7 +292,7 @@ class MainActivity : AppCompatActivity() {
                 currentSong = ""
                 val fTransaction = supportFragmentManager.beginTransaction()
                 fTransaction.replace(R.id.fragment_holder, HomeFragment(),"fragment_home")
-                fTransaction.commit()
+                fTransaction.commitAllowingStateLoss()
                 buttonBack.visibility = Button.INVISIBLE
             }
         }

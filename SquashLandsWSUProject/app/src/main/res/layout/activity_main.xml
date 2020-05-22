@@ -20,7 +20,6 @@
     </FrameLayout>
 
     <TextView
-        android:letterSpacing="0.1"
         android:id="@+id/textViewAnnouncement"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -28,6 +27,7 @@
         android:background="@color/colorSquashie"
         android:ellipsize="marquee"
         android:fontFamily="@font/anton"
+        android:letterSpacing="0.1"
         android:marqueeRepeatLimit="marquee_forever"
         android:singleLine="true"
         android:text="The super long annoucement text that it need to slide from right to left so people can read it"
@@ -37,6 +37,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_holder" />
 

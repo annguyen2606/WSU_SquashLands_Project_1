@@ -7,25 +7,23 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewRequest"
-        android:layout_width="0dp"
-        android:layout_height="580dp"
+        android:layout_width="599dp"
+        android:layout_height="522dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="23dp"
+        android:layout_marginBottom="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tableLayout" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TableLayout
         android:id="@+id/tableLayout"
-        android:layout_width="0dp"
+        android:layout_width="598dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginEnd="28dp"
+        android:layout_marginTop="97dp"
         android:background="@drawable/request_form"
         android:padding="10sp"
-        app:layout_constraintEnd_toStartOf="@+id/recyclerViewRequest"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/recyclerViewRequest">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TableRow
             android:layout_width="match_parent"
@@ -34,7 +32,7 @@
 
             <EditText
                 android:id="@+id/editTextRequestSongName"
-                android:layout_width="602dp"
+                android:layout_width="568dp"
                 android:layout_height="match_parent"
                 android:ems="10"
                 android:fontFamily="@font/anton"
@@ -49,7 +47,7 @@
 
             <EditText
                 android:id="@+id/editTextRequestFirstName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:fontFamily="@font/anton"
@@ -64,7 +62,7 @@
 
             <EditText
                 android:id="@+id/editTextRequestLastName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:fontFamily="@font/anton"
@@ -79,7 +77,7 @@
 
             <EditText
                 android:id="@+id/editTextRequestEmail"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:fontFamily="@font/anton"
@@ -93,12 +91,24 @@
         android:layout_width="126dp"
         android:layout_height="43dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="38dp"
+        android:layout_marginBottom="268dp"
         android:background="@drawable/submit_button"
         android:fontFamily="@font/anton"
         android:text="Send the request"
         android:textColor="@color/colorText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="97dp"
+        android:layout_marginEnd="444dp"
+        android:fontFamily="@font/anton"
+        android:text="List of Requests"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

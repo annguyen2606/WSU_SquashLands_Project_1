@@ -8,6 +8,7 @@
             android:paddingRight="30dp"
             android:paddingBottom="30dp"
             >
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,6 +75,11 @@
 
             </LinearLayout>
 
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1sp"
+                android:background="?android:attr/listDivider" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

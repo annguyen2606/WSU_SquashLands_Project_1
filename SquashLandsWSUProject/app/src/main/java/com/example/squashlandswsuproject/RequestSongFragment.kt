@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.beust.klaxon.Klaxon
@@ -27,6 +28,7 @@ class RequestSongFragment : Fragment(R.layout.fragment_request_songs){
         val recyclerViewRequest = view.findViewById<RecyclerView>(R.id.recyclerViewRequest)
         val adapter = CustomRequestRecyclerViewAdapter(MainActivity.request,view.context)
         val buttonSubmit = view.findViewById<Button>(R.id.buttonSubmitRequest)
+        recyclerViewRequest.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         recyclerViewRequest.adapter = adapter
         recyclerViewRequest.layoutManager = LinearLayoutManager(view.context, RecyclerView.VERTICAL, false)
 

@@ -99,14 +99,13 @@ def background():
                         tmp.append(status)
                         socketio.emit("respond to sync", tmp)
                         
-                        if(status == 'stopped') and (re.search('/Video%20Announcements/', song['@uri']) != None):
+                        if (state == 'stopped') and (song['@uri'].find('/Video%20Announcements/') != -1):
                             player.next()
                 except TypeError:
                     print(song)
                     print(currentSong)
 
         
-    
 #Timer for Video Announcements
 def videoTimer():
     global videoAnnouncementTimer
