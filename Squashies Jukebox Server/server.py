@@ -848,7 +848,8 @@ def on_connect():
     if request.args.get('fail'):
         print("failed")
         return False
-    print("connect")
+    print("connected")
+    socketio.emit("connected")
 
 @socketio.on('get pin number')
 def sync_pin_number():

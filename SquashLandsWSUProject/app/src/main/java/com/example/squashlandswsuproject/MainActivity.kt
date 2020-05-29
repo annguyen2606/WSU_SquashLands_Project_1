@@ -584,6 +584,9 @@ class MainActivity : AppCompatActivity() {
         announcement = sharedReferences.getString(announcementStr, resources.getString(R.string.default_announcement))!!
         idleInterval = sharedReferences.getInt(idleIntervalStr, 2)
         screenSaverAnimation = sharedReferences.getString(screenSaverAnimationStr, "Rotation")!!
+        iP = sharedReferences.getString(iPStr, "")!!
+
+        socket  = IO.socket("http://$iP:5000/")
         runOnUiThread{
             textViewAnnouncement.text = announcement
         }
@@ -607,7 +610,9 @@ class MainActivity : AppCompatActivity() {
 
     //declare static variables
     companion object{
-        val socket: Socket = IO.socket("http://192.168.0.3:5000/")
+        var iP = ""
+        var iPStr = "IP"
+        lateinit var socket: Socket
         var currentSong: String = ""
         var queue =  arrayListOf<Song>()
         var library = arrayListOf<SongWithArtist>()
