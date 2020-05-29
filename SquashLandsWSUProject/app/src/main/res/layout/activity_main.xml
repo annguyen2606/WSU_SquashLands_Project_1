@@ -51,16 +51,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" >
+
         <Button
             android:id="@+id/buttonBack"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/back_button"
-            style="?android:attr/borderlessButtonStyle"
-            android:fontFamily="@font/roboto_mono_medium"
+            android:fontFamily="@font/anton"
             android:text="Back"
-            android:visibility="invisible"
             android:textColor="@color/colorText"
+            android:textSize="18sp"
+            android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.appcompat.widget.Toolbar>

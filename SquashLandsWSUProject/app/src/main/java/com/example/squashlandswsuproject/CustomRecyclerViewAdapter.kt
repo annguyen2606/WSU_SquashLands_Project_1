@@ -8,6 +8,7 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+//Custom adapter for library recycler view
 //pass ArrayList, Context, and onclicklistener which is declared from fragment
 class CustomRecyclerViewAdapter(var songs: ArrayList<SongWithArtist>, var context: Context, private val clickListener: (SongWithArtist) -> Unit): RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder>(), Filterable {
     private var songsNotFiltered : ArrayList<SongWithArtist> = ArrayList(songs)
@@ -62,6 +63,7 @@ class CustomRecyclerViewAdapter(var songs: ArrayList<SongWithArtist>, var contex
     }
 
     private var songFilter: Filter = object : Filter() {
+        // Filter object
         override fun performFiltering(p0: CharSequence?): FilterResults {
             var filteredSong = ArrayList<SongWithArtist>()
             if (p0 == null || p0.length ==0){

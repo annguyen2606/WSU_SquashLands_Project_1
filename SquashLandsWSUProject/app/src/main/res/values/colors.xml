@@ -15,4 +15,7 @@
     <color name="colorBlack">#000000</color>
     <color name="colorGray">#C0C0C0</color>
     <color name="colorPlaying">#608E0B</color>
+    <color name="colorHomeButton">#73D2DE</color>
+    <color name="colorDarkGrayBlue">#8D99AE</color>
+    <color name="colorAlertApplySetting">#9E4C3E</color>
 </resources>

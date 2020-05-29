@@ -154,7 +154,13 @@ class SettingFragment: Fragment(R.layout.fragment_settings) {
         textViewSettingPlayingSong.text = currentSong?.name
 
         buttonSettingApply.setOnClickListener {
-            saveSettings()
+            val alertDialog: AlertDialog.Builder = AlertDialog.Builder(context!!)
+            alertDialog.setCancelable(true)
+            alertDialog.setTitle("Confirmation")
+            alertDialog.setMessage("Apply new settings ?")
+            alertDialog.setNegativeButton("No") { _, _ -> }
+            alertDialog.setPositiveButton("Yes") { _, _ -> saveSettings() }
+            alertDialog.show()
         }
 
         //set default values when click on load default button

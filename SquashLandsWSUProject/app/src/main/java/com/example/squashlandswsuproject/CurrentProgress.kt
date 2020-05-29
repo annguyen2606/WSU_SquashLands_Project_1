@@ -2,7 +2,7 @@ package com.example.squashlandswsuproject
 
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
-
+//Observable class from current time counted in second
 class CurrentProgress(var currentSec: Int, var maxSec: Int):BaseObservable() {
     @Bindable
     fun getCurrentSecond(): Int{
