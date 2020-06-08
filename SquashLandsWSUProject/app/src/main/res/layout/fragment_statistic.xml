@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="650sp">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewStatistic"
+        android:layout_width="642dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="187dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonStatisticLoad"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/frameHolderStatisticControl"
+        android:layout_width="613dp"
+        android:layout_height="117dp"
+        android:layout_marginStart="334dp"
+        android:layout_marginTop="68dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ToggleButton
+            android:id="@+id/toggleButtonStatsMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="27dp"
+            android:checked="false"
+            android:textOff="Popularity"
+            android:textOn="Normal"
+            app:layout_constraintStart_toStartOf="@+id/radioGroupPopularityMode"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupPopularityMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:layout_marginBottom="16dp"
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            android:paddingBottom="10sp"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toggleButtonStatsMode">
+
+            <RadioButton
+                android:id="@+id/radioButtonStatsByDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="By Date"
+                android:textAlignment="viewStart"
+                tools:layout_editor_absoluteX="155dp"
+                tools:layout_editor_absoluteY="42dp" />
+
+            <RadioButton
+                android:id="@+id/radioButtonStatsBySong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="By Song" />
+        </RadioGroup>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/buttonStatisticLoad"
+        android:layout_width="142dp"
+        android:layout_height="47dp"
+        android:layout_marginStart="580dp"
+        android:layout_marginBottom="11dp"
+        android:text="Load"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewStatistic"
+        app:layout_constraintVertical_bias="1.0" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

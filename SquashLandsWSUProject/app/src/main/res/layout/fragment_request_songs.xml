@@ -5,106 +5,150 @@
     android:layout_width="match_parent"
     android:layout_height="700sp">
 
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="45dp"
+        android:fontFamily="@font/anton"
+        android:text="Email"
+        android:textColor="@color/colorBlack"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextRequestLastName" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="45dp"
+        android:fontFamily="@font/anton"
+        android:text="Last Name"
+        android:textColor="@color/colorBlack"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextRequestFirstName" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="45dp"
+        android:fontFamily="@font/anton"
+        android:text="First Name"
+        android:textColor="@color/colorBlack"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextRequestSongName" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewRequest"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="23dp"
-        android:layout_marginEnd="26dp"
-        android:layout_marginBottom="23dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="599dp"
+        android:layout_height="522dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tableLayout"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TableLayout
-        android:id="@+id/tableLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="46dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="17dp"
-        android:layout_marginBottom="41dp"
-        android:background="@drawable/shadow_button"
-        android:paddingLeft="10sp"
-        android:paddingRight="10sp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonSubmitRequest"
-        app:layout_constraintEnd_toStartOf="@+id/recyclerViewRequest"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="5sp">
-
-            <EditText
-                android:id="@+id/editTextRequestSongName"
-                android:layout_width="602dp"
-                android:layout_height="match_parent"
-                android:ems="10"
-                android:hint="Name of the song"
-                android:inputType="textPersonName"
-                android:fontFamily="@font/roboto_mono"/>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="5sp">
-
-            <EditText
-                android:id="@+id/editTextRequestFirstName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Your first name"
-                android:inputType="textPersonName"
-                android:fontFamily="@font/roboto_mono"/>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="5sp">
-
-            <EditText
-                android:id="@+id/editTextRequestLastName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Your last name"
-                android:inputType="textPersonName"
-                android:fontFamily="@font/roboto_mono"/>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="15sp">
-
-            <EditText
-                android:id="@+id/editTextRequestEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Your email e.g. example@gmail.com"
-                android:inputType="textEmailAddress"
-                android:fontFamily="@font/roboto_mono"/>
-        </TableRow>
-    </TableLayout>
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <Button
         android:id="@+id/buttonSubmitRequest"
-        android:layout_width="213dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="46dp"
-        android:layout_marginBottom="371dp"
-        android:background="@drawable/back_button"
+        android:layout_width="209dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="26dp"
+        android:background="@drawable/submit_button"
+        android:fontFamily="@font/anton"
         android:text="Send the request"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textColor="@color/colorText"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tableLayout"
-        android:fontFamily="@font/roboto_mono"/>
+        app:layout_constraintTop_toBottomOf="@+id/editTextRequestEmail" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="97dp"
+        android:layout_marginEnd="444dp"
+        android:fontFamily="@font/anton"
+        android:text="List of Requests"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextRequestEmail"
+        android:layout_width="514sp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:ems="10"
+        android:fontFamily="@font/anton"
+        android:hint="Your email e.g. example@gmail.com"
+        android:inputType="textEmailAddress"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+    <EditText
+        android:id="@+id/editTextRequestLastName"
+        android:layout_width="514sp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="1dp"
+        android:ems="10"
+        android:fontFamily="@font/anton"
+        android:hint="Your last name"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+    <EditText
+        android:id="@+id/editTextRequestFirstName"
+        android:layout_width="514sp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:ems="10"
+        android:fontFamily="@font/anton"
+        android:hint="Your first name"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+
+    <EditText
+        android:id="@+id/editTextRequestSongName"
+        android:layout_width="514dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:ems="10"
+        android:fontFamily="@font/anton"
+        android:hint="Name of the song"
+        android:inputType="textPersonName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="103dp"
+        android:fontFamily="@font/anton"
+        android:text="Song Name"
+        android:textColor="@color/colorBlack"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="2dp"
+        android:layout_height="580dp"
+        android:layout_marginStart="604dp"
+        android:layout_marginTop="100dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

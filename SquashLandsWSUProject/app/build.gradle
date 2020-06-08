@@ -6,6 +6,9 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
+    dataBinding.enabled = true
+    apply plugin: "kotlin-kapt"
+
     defaultConfig {
         applicationId "com.example.squashlandswsuproject"
         minSdkVersion 28
@@ -23,6 +26,8 @@ android {
         }
     }
 
+
+
 }
 
 dependencies {
@@ -38,4 +43,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.beust:klaxon:5.2'
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'me.spark:submitbutton:1.0.1'
 }

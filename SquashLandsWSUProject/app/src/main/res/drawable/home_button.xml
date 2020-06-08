@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- White foreground. -->
+    <item>
+        <ripple android:color="@color/colorWhite">
+            <item>
+                <shape>
+                    <solid android:color="@color/colorDarkGrayBlue" />
+                    <corners android:radius="5sp"/>
+                </shape>
+            </item>
+        </ripple>
+    </item>
+</layer-list>

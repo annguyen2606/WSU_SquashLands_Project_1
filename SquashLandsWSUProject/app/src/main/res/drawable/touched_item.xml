@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- White foreground. -->
+    <item android:bottom="0dp" android:right="0dp">
+        <shape android:shape="rectangle">
+            <padding android:left="10dp" android:right="10dp" android:top="10dp" android:bottom="10dp"/>
+            <solid android:color="@color/colorAlert" />
+        </shape>
+    </item>
+</layer-list>

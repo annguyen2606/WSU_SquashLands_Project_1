@@ -2,24 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="5sp">
 
     <TextView
         android:id="@+id/textViewRequestSongName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto_mono"
+        android:fontFamily="@font/anton"
         android:text="TextView"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textSize="24sp" />
 
-    <TextView
-        android:id="@+id/textViewRequestName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto_mono"
-        android:text="TextView"
-        android:textColor="@color/colorBlue"
-        android:textSize="16sp" />
 </LinearLayout>

@@ -11,8 +11,6 @@ class CustomRequestRecyclerViewAdapter (var request: ArrayList<Request>, var con
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         fun bindItems(request: Request){
             val textViewRequestSongName = itemView.findViewById<TextView>(R.id.textViewRequestSongName)
-            val textViewRequestName = itemView.findViewById<TextView>(R.id.textViewRequestName)
-            textViewRequestName.text = "Request by : " + request.patronName
             textViewRequestSongName.text = request.songName
         }
     }

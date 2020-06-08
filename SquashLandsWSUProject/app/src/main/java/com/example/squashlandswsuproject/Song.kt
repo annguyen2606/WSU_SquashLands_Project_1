@@ -10,7 +10,7 @@ data class Song (
     val name: String,
 
     @Json(name = "@id")
-    val id: String,
+    var id: String,
 
     @Json(name = "@uri")
     val uri: String,
