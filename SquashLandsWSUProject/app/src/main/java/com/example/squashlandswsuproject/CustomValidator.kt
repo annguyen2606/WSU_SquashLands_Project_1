@@ -1,6 +1,7 @@
 package com.example.squashlandswsuproject
 
 //class with static function for request fields validation
+
 class CustomValidator(){
     companion object{
         fun ValidateRequest(request: Request): String{

@@ -17,5 +17,8 @@
     <color name="colorPlaying">#608E0B</color>
     <color name="colorHomeButton">#73D2DE</color>
     <color name="colorDarkGrayBlue">#8D99AE</color>
-    <color name="colorAlertApplySetting">#9E4C3E</color>
+    <color name="colorAlertApplySetting">#E61937</color>
+    <color name="colorPlayButton">#E61937</color>
+    <color name="colorSkipButton">#2196F3</color>
+    <color name="colorRadio">#000000</color>
 </resources>

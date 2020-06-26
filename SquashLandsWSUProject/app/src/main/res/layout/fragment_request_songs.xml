@@ -11,10 +11,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="45dp"
-        android:fontFamily="@font/anton"
+        android:fontFamily="@font/roboto_medium"
         android:text="Email"
         android:textColor="@color/colorBlack"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextRequestLastName" />
 
@@ -24,10 +25,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="45dp"
-        android:fontFamily="@font/anton"
+        android:fontFamily="@font/roboto_medium"
         android:text="Last Name"
         android:textColor="@color/colorBlack"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextRequestFirstName" />
 
@@ -37,10 +39,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="45dp"
-        android:fontFamily="@font/anton"
+        android:fontFamily="@font/roboto_medium"
         android:text="First Name"
         android:textColor="@color/colorBlack"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextRequestSongName" />
 
@@ -50,20 +53,23 @@
         android:layout_height="522dp"
         android:layout_marginTop="9dp"
         android:layout_marginEnd="24dp"
+        android:background="@drawable/background_box"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        android:padding="10dp"/>
 
     <Button
         android:id="@+id/buttonSubmitRequest"
-        android:layout_width="209dp"
-        android:layout_height="44dp"
+        android:layout_width="275dp"
+        android:layout_height="50dp"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/submit_button"
-        android:fontFamily="@font/anton"
+        android:fontFamily="@font/roboto_medium"
         android:text="Send the request"
         android:textColor="@color/colorText"
-        android:textSize="20sp"
+        android:textSize="22sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextRequestEmail" />
 
@@ -71,11 +77,12 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="97dp"
-        android:layout_marginEnd="444dp"
-        android:fontFamily="@font/anton"
+        android:layout_marginTop="96dp"
+        android:layout_marginEnd="424dp"
+        android:fontFamily="@font/roboto_medium"
         android:text="List of Requests"
         android:textSize="28sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -85,7 +92,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:ems="10"
-        android:fontFamily="@font/anton"
+        android:fontFamily="@font/roboto_light"
         android:hint="Your email e.g. example@gmail.com"
         android:inputType="textEmailAddress"
         app:layout_constraintStart_toStartOf="parent"
@@ -98,7 +105,7 @@
         android:layout_marginStart="40dp"
         android:layout_marginTop="1dp"
         android:ems="10"
-        android:fontFamily="@font/anton"
+        android:fontFamily="@font/roboto_light"
         android:hint="Your last name"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
@@ -110,7 +117,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:ems="10"
-        android:fontFamily="@font/anton"
+        android:fontFamily="@font/roboto_light"
         android:hint="Your first name"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
@@ -122,7 +129,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:ems="10"
-        android:fontFamily="@font/anton"
+        android:fontFamily="@font/roboto_light"
         android:hint="Name of the song"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
@@ -134,10 +141,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="103dp"
-        android:fontFamily="@font/anton"
+        android:fontFamily="@font/roboto_medium"
         android:text="Song Name"
         android:textColor="@color/colorBlack"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

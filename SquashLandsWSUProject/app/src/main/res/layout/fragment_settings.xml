@@ -34,7 +34,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="250dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -42,16 +42,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
-                    android:fontFamily="@font/anton"
+                    android:fontFamily="@font/roboto_medium"
                     android:text="TextView"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="28sp" />
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/textView4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/anton"
+                    android:fontFamily="@font/roboto_light"
                     android:text="@{artist.currentArtistStr}"
                     android:textSize="20sp" />
 
@@ -64,7 +65,7 @@
                         android:id="@+id/textViewSettingPlayingTime"
                         android:layout_width="104dp"
                         android:layout_height="38dp"
-                        android:fontFamily="@font/anton"
+                        android:fontFamily="@font/roboto_light"
                         android:text="@{time.timeStr}"
                         android:textColor="@color/colorBlue"
                         android:textSize="18sp" />
@@ -73,7 +74,7 @@
                         android:id="@+id/textViewSettingPlayingStatus"
                         android:layout_width="match_parent"
                         android:layout_height="38dp"
-                        android:fontFamily="@font/anton"
+                        android:fontFamily="@font/roboto_light"
                         android:text="Playing"
                         android:textAlignment="viewEnd"
                         android:textColor="#608E0B"
@@ -95,16 +96,21 @@
 
                     <ImageButton
                         android:id="@+id/imageButtonSettingPlayStop"
-                        android:layout_width="207dp"
+                        android:layout_width="200dp"
                         android:layout_height="50dp"
-                        android:layout_marginBottom="4dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:background="@drawable/setting_play_button"
                         android:src="@android:drawable/ic_media_play" />
 
                     <ImageButton
                         android:id="@+id/imageButtonSettingNext"
-                        android:layout_width="207dp"
+                        android:layout_width="200dp"
                         android:layout_height="50dp"
-                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="14dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:background="@drawable/setting_skip_button"
                         android:src="@android:drawable/ic_media_next" />
                 </LinearLayout>
             </LinearLayout>
@@ -112,12 +118,14 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewSetting"
-            android:layout_width="579dp"
-            android:layout_height="337dp"
+            android:layout_width="573dp"
+            android:layout_height="304dp"
             android:layout_marginStart="36dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/background_box"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2" />
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+            android:padding="10dp"/>
 
         <Button
             android:id="@+id/buttonSubmitQueue"
@@ -126,8 +134,9 @@
             android:layout_marginStart="36dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="7dp"
-            android:fontFamily="@font/anton"
+            android:fontFamily="@font/roboto_medium"
             android:text="Apply"
+            android:textStyle="bold"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -147,10 +156,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:fontFamily="@font/anton"
+                android:fontFamily="@font/roboto_medium"
                 android:text="Announcement"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="24sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/editTextSettingAnnouncement"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -161,7 +171,7 @@
                 android:layout_height="52dp"
                 android:layout_marginStart="16dp"
                 android:ems="10"
-                android:fontFamily="@font/anton"
+                android:fontFamily="@font/roboto_light"
                 android:hint="scrolling announcement"
                 android:inputType="textPersonName"
                 android:paddingTop="2sp"
@@ -185,10 +195,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:fontFamily="@font/anton"
+                android:fontFamily="@font/roboto_medium"
                 android:text="Idle Interval"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="24sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/editTextSettingIdleInterval"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -199,7 +210,7 @@
                 android:layout_height="42dp"
                 android:layout_marginStart="16dp"
                 android:ems="10"
-                android:fontFamily="@font/anton"
+                android:fontFamily="@font/roboto_light"
                 android:inputType="number"
                 android:paddingTop="2sp"
                 android:textSize="18sp"
@@ -212,7 +223,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="20dp"
-                android:fontFamily="@font/anton"
+                android:fontFamily="@font/roboto_light"
                 android:text="minutes"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="18sp"
@@ -224,10 +235,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:fontFamily="@font/anton"
+                android:fontFamily="@font/roboto_medium"
                 android:text="Screen Saver Animation"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="24sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/radioGroup"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editTextSettingIdleInterval" />
@@ -245,19 +257,21 @@
                     android:id="@+id/radioButtonSettingScreenSaverRotation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/anton"
+                    android:fontFamily="@font/roboto_light"
                     android:text="Rotation"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:buttonTint="@color/colorRadio"/>
 
                 <RadioButton
                     android:id="@+id/radioButtonSettingScreenSaverPumping"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/anton"
+                    android:fontFamily="@font/roboto_light"
                     android:text="Pumping"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:buttonTint="@color/colorRadio"/>
             </RadioGroup>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -267,8 +281,11 @@
             android:layout_height="55dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="24dp"
-            android:fontFamily="@font/anton"
+            android:background="@drawable/setting_load_default_button"
+            android:fontFamily="@font/roboto_medium"
             android:text="Load Default Settings"
+            android:textSize="18sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/buttonSettingApply"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
@@ -277,15 +294,18 @@
             android:layout_width="305dp"
             android:layout_height="118dp"
             android:layout_marginTop="9dp"
-            android:layout_marginEnd="34dp"
+            android:layout_marginEnd="32dp"
             android:layout_marginBottom="13dp"
-            android:fontFamily="@font/anton"
+            android:background="@drawable/apply_setting_button"
+            android:fontFamily="@font/roboto_medium"
             android:text="Apply New Settings"
             android:textColor="@color/colorWhite"
+            android:textSize="24sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-            android:background="@drawable/apply_setting_button"/>
+            app:layout_constraintVertical_bias="0.6" />
 
         <Button
             android:id="@+id/buttonSettingStatistic"
@@ -293,8 +313,11 @@
             android:layout_height="55dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="24dp"
-            android:fontFamily="@font/anton"
+            android:background="@drawable/setting_statistic_button"
+            android:fontFamily="@font/roboto_medium"
             android:text="Statistic"
+            android:textSize="18sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/buttonSettingApply"
             app:layout_constraintTop_toBottomOf="@+id/buttonSettingLoadDefault" />
 

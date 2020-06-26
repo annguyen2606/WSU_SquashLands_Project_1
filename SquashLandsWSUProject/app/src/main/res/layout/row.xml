@@ -17,17 +17,18 @@
             android:id="@+id/songItemName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/anton"
+            android:fontFamily="@font/roboto_medium"
             android:paddingLeft="5sp"
             android:text="Song name"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/songItemDuration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/anton"
+            android:fontFamily="@font/roboto_light"
             android:paddingLeft="5sp"
             android:text="Duration"
             android:textAlignment="viewEnd"
@@ -39,7 +40,7 @@
         android:id="@+id/songItemArtist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/anton"
+        android:fontFamily="@font/roboto_light"
         android:paddingLeft="5sp"
         android:text="TextView"
         android:textSize="18sp" />

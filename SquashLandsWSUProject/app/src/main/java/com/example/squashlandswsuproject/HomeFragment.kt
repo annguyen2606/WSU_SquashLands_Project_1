@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.client.SocketIOException
+import kotlinx.android.synthetic.main.activity_screen_saver.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import java.net.Inet4Address
 import java.util.regex.Pattern

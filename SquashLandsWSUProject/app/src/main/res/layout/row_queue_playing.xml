@@ -33,17 +33,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:fontFamily="@font/anton"
+                android:fontFamily="@font/roboto_medium"
                 android:text="TextView"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="28sp" />
+                android:textSize="28sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textViewQueuePlayingArtist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:fontFamily="@font/anton"
+                android:fontFamily="@font/roboto_light"
                 android:text="TextView"
                 android:textSize="24sp" />
 
@@ -65,22 +66,23 @@
                     android:layout_width="119dp"
                     android:layout_height="wrap_content"
 
-                    android:fontFamily="@font/anton"
+                    android:fontFamily="@font/roboto_light"
+                    android:paddingBottom="5sp"
                     android:text="@{time.timeStr}"
                     android:textColor="@color/colorBlue"
-                    android:textSize="24sp"
-                    android:paddingBottom="5sp"/>
+                    android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/textViewQueuePlayingStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
 
-                    android:fontFamily="@font/anton"
+                    android:fontFamily="@font/roboto_light"
+                    android:paddingBottom="5sp"
                     android:text="@{status.statusStr}"
                     android:textAlignment="viewEnd"
                     android:textColor="@{status.status ? @color/colorPlaying : @color/colorAlert}"
-                    android:textSize="22sp" android:paddingBottom="5sp"/>
+                    android:textSize="22sp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

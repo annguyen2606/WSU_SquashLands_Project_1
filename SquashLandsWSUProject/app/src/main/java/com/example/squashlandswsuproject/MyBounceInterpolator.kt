@@ -3,6 +3,7 @@ package com.example.squashlandswsuproject
 import android.view.animation.Interpolator
 
 //this is interpolator class is customed for pumping animation
+
 internal class MyBounceInterpolator(
     amplitude: Double,
     frequency: Double

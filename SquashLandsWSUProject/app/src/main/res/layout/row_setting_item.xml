@@ -20,18 +20,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
-            android:fontFamily="@font/anton"
+            android:fontFamily="@font/roboto_medium"
             android:text="textView"
             android:textAlignment="center"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textViewSettingListTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
-            android:fontFamily="@font/anton"
+            android:fontFamily="@font/roboto_light"
             android:maxWidth="400sp"
             android:text="sdf"
             android:textAlignment="viewEnd"
@@ -44,7 +45,7 @@
         android:id="@+id/textViewSettingListArtist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/anton"
+        android:fontFamily="@font/roboto_light"
         android:text="TextView"
         android:textSize="18sp" />
 

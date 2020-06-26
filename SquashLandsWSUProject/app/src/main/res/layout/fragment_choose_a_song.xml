@@ -7,25 +7,28 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
-        android:layout_width="544dp"
+        android:layout_width="550dp"
         android:layout_height="504dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="170dp"
         android:layout_marginBottom="26dp"
+        android:background="@drawable/background_box"
         android:divider="#ad5"
         android:dividerHeight="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        android:padding="10dp"/>
 
     <SearchView
         android:id="@+id/searchView"
-        android:layout_width="543sp"
+        android:layout_width="550sp"
         android:layout_height="67dp"
 
         android:layout_marginStart="32dp"
         android:layout_marginTop="88dp"
-        android:background="@drawable/ripple"
+        android:background="@drawable/background_box"
         android:iconifiedByDefault="false"
         android:queryHint="@string/search_hint"
         android:singleLine="true"
@@ -33,31 +36,35 @@
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:theme="@style/Widget.AppCompat.ActionBar"
-        android:clickable="true">
+        android:clickable="true"
+        >
     </SearchView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewQueue"
-        android:layout_width="546dp"
+        android:background="@drawable/background_box"
+        android:layout_width="550dp"
         android:layout_height="585dp"
         android:layout_marginTop="91dp"
         android:layout_marginEnd="60dp"
         android:layout_marginBottom="26dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="10dp"/>
 
     <View
         android:id="@+id/divider3"
         android:layout_width="2dp"
         android:layout_height="580dp"
-        android:layout_marginStart="47dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="91dp"
         android:layout_marginBottom="26dp"
         android:background="?android:attr/listDivider"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/recyclerView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

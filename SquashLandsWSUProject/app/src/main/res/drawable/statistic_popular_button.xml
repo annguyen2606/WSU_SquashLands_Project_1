@@ -5,7 +5,7 @@
         <ripple android:color="@color/colorWhite">
             <item>
                 <shape>
-                    <solid android:color="@color/colorDarkGrayBlue" />
+                    <solid android:color="@color/colorHomeButton" />
                     <corners android:radius="100sp"/>
                 </shape>
             </item>

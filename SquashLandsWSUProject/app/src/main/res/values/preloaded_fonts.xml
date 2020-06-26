@@ -3,8 +3,12 @@
     <array name="preloaded_fonts" translatable="false">
         <item>@font/anton</item>
         <item>@font/exo_bold</item>
+        <item>@font/roboto</item>
+        <item>@font/roboto_bold</item>
+        <item>@font/roboto_light</item>
         <item>@font/roboto_mono</item>
         <item>@font/roboto_mono_medium</item>
+        <item>@font/roboto_thin</item>
         <item>@font/salsa</item>
     </array>
 </resources>

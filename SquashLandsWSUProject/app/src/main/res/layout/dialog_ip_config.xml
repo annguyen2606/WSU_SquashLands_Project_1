@@ -23,7 +23,7 @@
             android:id="@+id/textViewDialog"
             android:layout_width="match_parent"
             android:layout_height="49dp"
-            android:fontFamily="@font/anton"
+            android:fontFamily="@font/roboto_medium"
             android:text="Server IP"
             android:textAlignment="center"
             android:textSize="24sp" />
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:ems="10"
-            android:fontFamily="@font/anton"
+            android:fontFamily="@font/roboto_light"
             android:hint="Type Server IP"
             android:textAlignment="center" />
 
@@ -41,7 +41,7 @@
             android:id="@+id/buttonSubmitIP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/anton"
+            android:fontFamily="@font/roboto_medium"
             android:text="Submit"
             android:textAlignment="center" />
     </LinearLayout>

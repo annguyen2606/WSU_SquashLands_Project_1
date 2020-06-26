@@ -10,10 +10,12 @@
         android:layout_width="642dp"
         android:layout_height="0dp"
         android:layout_marginTop="187dp"
+        android:background="@drawable/background_box"
         app:layout_constraintBottom_toTopOf="@+id/buttonStatisticLoad"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="10dp"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frameHolderStatisticControl"
@@ -29,9 +31,10 @@
 
         <ToggleButton
             android:id="@+id/toggleButtonStatsMode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
             android:layout_marginStart="27dp"
+            android:background="@drawable/statistic_popular_button"
             android:checked="false"
             android:textOff="Popularity"
             android:textOn="Normal"
@@ -58,7 +61,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
+                android:fontFamily="@font/roboto_light"
                 android:text="By Date"
+                android:buttonTint="@color/colorRadio"
                 android:textAlignment="viewStart"
                 tools:layout_editor_absoluteX="155dp"
                 tools:layout_editor_absoluteY="42dp" />
@@ -67,6 +72,8 @@
                 android:id="@+id/radioButtonStatsBySong"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_light"
+                android:buttonTint="@color/colorRadio"
                 android:text="By Song" />
         </RadioGroup>
 
@@ -76,9 +83,13 @@
         android:id="@+id/buttonStatisticLoad"
         android:layout_width="142dp"
         android:layout_height="47dp"
-        android:layout_marginStart="580dp"
+        android:layout_marginStart="576dp"
         android:layout_marginBottom="11dp"
+        android:background="@drawable/statistic_load_button"
+        android:fontFamily="@font/roboto_medium"
         android:text="Load"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerViewStatistic"

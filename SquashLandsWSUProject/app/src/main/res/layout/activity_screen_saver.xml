@@ -7,34 +7,40 @@
     android:background="#000000"
     tools:context=".ScreenSaverActivity">
 
+
     <ImageView
         android:id="@+id/imageViewScreenSaverLogo"
-        android:layout_width="1278dp"
-        android:layout_height="228dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginBottom="36dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="245dp"
+        android:layout_marginBottom="92dp"
         android:src="@drawable/squash_land_logo"
         app:layout_constraintBottom_toTopOf="@+id/textViewScreenSaverAnnouncement"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewScreenSaverAnnouncement"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="284dp"
+        android:layout_marginBottom="98dp"
         android:background="#000000"
         android:ellipsize="marquee"
-        android:fontFamily="@font/roboto_mono"
+        android:fontFamily="@font/roboto_light"
         android:marqueeRepeatLimit="marquee_forever"
         android:singleLine="true"
         android:text="The super long annoucement text that it need to slide from right to left so people can read it"
         android:textAlignment="center"
         android:textColor="@color/colorText"
-        android:textSize="40sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_holder" />
+        app:layout_constraintTop_toBottomOf="@+id/imageViewScreenSaverLogo" />
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+

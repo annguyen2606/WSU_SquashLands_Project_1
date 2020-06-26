@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 //Custom adapter for library recycler view
 //pass ArrayList, Context, and onclicklistener which is declared from fragment
+
 class CustomRecyclerViewAdapter(var songs: ArrayList<SongWithArtist>, var context: Context, private val clickListener: (SongWithArtist) -> Unit): RecyclerView.Adapter<CustomRecyclerViewAdapter.ViewHolder>(), Filterable {
     private var songsNotFiltered : ArrayList<SongWithArtist> = ArrayList(songs)
 

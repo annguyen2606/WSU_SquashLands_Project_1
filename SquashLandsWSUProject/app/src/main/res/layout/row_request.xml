@@ -9,9 +9,10 @@
         android:id="@+id/textViewRequestSongName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/anton"
+        android:fontFamily="@font/roboto_medium"
         android:text="TextView"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
 </LinearLayout>
