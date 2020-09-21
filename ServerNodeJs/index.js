@@ -3,12 +3,19 @@ const { Socket } = require("dgram");
 const app = require("express")();
 const http = require("http").createServer(app);
 const io = require('socket.io')(http);
-const vlc = require("vlc-client");
 const VLC = require("./VLC");
+const { Console } = require("console");
 
 const vlcObj = new VLC('localhost',8080,'test');
 
-const vlcClient = new vlc.Client({ip: '0.0.0.0', port: 8080, password:'test'}); 
+
+vlcObj.playlist(playlistObj=>{
+    var returnedData = playlistObj;
+    returnedData.forEach(element => {
+        console.log(element);
+    });
+})
+
 app.get('/', (req, res) => {
     res.sendFile(__dirname+'/media.html');
 });
@@ -18,5 +25,7 @@ io.on('connection', (socket) => {
 });
 
 http.listen(5000, ()=>{
-    console.log('listening on port 3000');
+    console.log('listening on port 5000');
 });
+
+
