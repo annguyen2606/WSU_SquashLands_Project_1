@@ -1,11 +1,10 @@
 
-var basicAuth = require("basic-auth-connect");
-const vlc = require("vlc-client");
-const request = require('request');
 const http = require('http');
-module.exports = class VLC{
+const queryString = require('querystring');
+const { VLC } = require('node-vlc-http');
+module.exports = class VLCApp{
 
-    constructor(host,port,password){
+    constructor(host,port,password,callBack){
         this.host = host;
         this.port = port;
         this.password = password;
@@ -23,19 +22,28 @@ module.exports = class VLC{
             '--http-password',
             `${this.password}`
         ]);
+
+
     }
 
-    playlist(callBack){     
+    library(callBack){     
         var request = http.get({host:this.host, path: "/requests/playlist.json", port: this.port, auth: `:${this.password}` },res=>{
             var a = '';
             res.setEncoding("utf-8");
             res.on('data', a = (chunk)=>{
                 var obj = JSON.parse(chunk);
-                var media = obj.children[1].children;
+                var media = obj.children;
                 let tmp = Array.from(media);
                 callBack(tmp);
             });
         })
         request.end();
+    }
+
+    getClient(){
+        if(typeof this.httpclient !== 'undefined')
+            return this.httpclient;
+        else
+            return new VLC({host:this.host, port: this.port,username:"", password: this.password});
     }
 }
