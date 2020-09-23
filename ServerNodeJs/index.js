@@ -1,5 +1,4 @@
 const { Socket } = require("dgram");
-
 const app = require("express")();
 const session = require("express-session");
 const http = require("http").createServer(app);
@@ -8,8 +7,10 @@ const VLCApp = require("./VLC");
 const { VLC } = require('node-vlc-http');
 const { Console } = require("console");
 var cookieParser = require('cookie-parser');
-var Staff = require('./Staff');
-var bodyParser = require('body-parser')
+const Staff = require("./Models/Staff");
+const Request = require("./Models/Request");
+const QueueSong = require("./Models/QueueSong");
+var bodyParser = require('body-parser');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -42,7 +43,10 @@ app.get('/', (req, res) => {
 });
 
 app.route('/login').get(sessionChecker,(req,res)=>{
-    res.sendFile(__dirname+'/Templates/login.html');
+    if(req.session.user && req.cookies.user_sid){
+        res.redirect('/media');
+    }else
+        res.sendFile(__dirname+'/Templates/login.html');
 }).post((req,res)=>{
     var username = req.body.uname;
     var password = req.body.psw;
@@ -52,7 +56,7 @@ app.route('/login').get(sessionChecker,(req,res)=>{
         }else if(!user.validPassword(password)){
             res.redirect('/login');
         }else{
-            res.session.user = user.dataValues;
+            req.session.user = user.uname;
             res.redirect('/media');
         }
     });
