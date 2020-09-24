@@ -11,7 +11,33 @@ const Staff = require("./Models/Staff");
 const Request = require("./Models/Request");
 const QueueSong = require("./Models/QueueSong");
 var bodyParser = require('body-parser');
+const { request } = require("http");
+const { render } = require("ejs");
 
+var currentSong = "";
+
+setInterval(()=>{
+    vlcObj.library(playlistObj=>{
+        if(playlistObj[0].children.length > 0){
+            playlistObj[0].children.forEach(element => {
+                if(element.hasOwnProperty('current')){
+                    if(element.name !== currentSong){
+
+                        currentSong = element.name;
+                        console.log(currentSong);
+                        mediaNamespace.emit('new song on', {currentSong: currentSong});
+                    }
+                }
+            });
+        }
+    });
+},1000);
+
+const mediaNamespace = io.of('/mediaNameSpace');
+
+mediaNamespace.on('connection', socket => {
+    console.log('client connected to media namespace');
+});
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const vlcObj = new VLCApp('localhost',8080,'test');
@@ -26,7 +52,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        expires: 600000
+        expires: 60000
     }
 }));
 
@@ -65,7 +91,7 @@ app.route('/login').get(sessionChecker,(req,res)=>{
 app.get('/media',(req,res)=>{
     if(req.session.user && req.cookies.user_sid){
         vlcObj.library(playlistObj=>{
-            res.render('media.html',songs = playlistObj);
+            res.render('media.html',{songs: playlistObj,  user: req.session.user});
         });
     }else{
         res.redirect('/login');
@@ -79,6 +105,22 @@ app.get('/logout', (req, res) => {
     } else {
         res.redirect('/login');
     }
+});
+
+app.route('/addToQueue').get((req, res) => {
+    vlcObj.add(req.query.uri,()=>{
+        setTimeout(()=>{
+            res.redirect('/media');
+        },1000)
+    });
+});
+
+app.route('/removeFromQueue').get((req, res) => {
+    vlcObj.remove(req.query.id,()=>{
+        setTimeout(()=>{
+            res.redirect('/media');
+        },1000)
+    });
 });
 
 http.listen(5000, ()=>{

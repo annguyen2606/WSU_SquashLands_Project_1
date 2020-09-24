@@ -40,10 +40,19 @@ module.exports = class VLCApp{
         request.end();
     }
 
-    getClient(){
-        if(typeof this.httpclient !== 'undefined')
-            return this.httpclient;
-        else
-            return new VLC({host:this.host, port: this.port,username:"", password: this.password});
+    add(uri, callBack){
+        var request = http.get({host:this.host, path: "/requests/status.xml?command=in_enqueue&input=" + encodeURI(uri), port: this.port, auth: `:${this.password}` },res=>{
+            console.log(`Adding file ${uri} into queue`);
+        })
+        request.end();
+        callBack();
+    }
+
+    remove(id, callBack){
+        var request = http.get({host:this.host, path: "/requests/status.xml?command=pl_delete&id=" + id, port: this.port, auth: `:${this.password}` },res=>{
+            console.log(`removing song ID ${id} from queue`);
+        })
+        request.end();
+        callBack()
     }
 }
