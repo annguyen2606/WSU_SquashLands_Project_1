@@ -22,8 +22,15 @@ module.exports = class VLCApp{
             '--http-password',
             `${this.password}`
         ]);
+        this.queueSize = 5;
+        let shuffle = function (array) {
+            for (let i = array.length - 1; i > 0; i--) {
+              let j = Math.floor(Math.random() * (i + 1));
+              [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
 
-
+        this.vlcClient = new VLC({host: this.host, password: this.password, username:""});
     }
 
     library(callBack){     
@@ -41,10 +48,8 @@ module.exports = class VLCApp{
     }
 
     add(uri, callBack){
-        var request = http.get({host:this.host, path: "/requests/status.xml?command=in_enqueue&input=" + encodeURI(uri), port: this.port, auth: `:${this.password}` },res=>{
-            console.log(`Adding file ${uri} into queue`);
-        })
-        request.end();
+        console.log(typeof uri);
+        this.vlcClient.addToQueue(uri);
         callBack();
     }
 
@@ -54,5 +59,13 @@ module.exports = class VLCApp{
         })
         request.end();
         callBack()
+    }
+
+    addAndPlay(uri, callBack){
+        var request = http.get({host:this.host, path: "/requests/status.xml?command=in_play&input=" + encodeURI(uri), port: this.port, auth: `:${this.password}` },res=>{
+            console.log(`Adding file ${uri} into queue`);
+        })
+        request.end();
+        callBack();
     }
 }

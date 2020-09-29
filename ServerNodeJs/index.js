@@ -90,7 +90,8 @@ app.route('/login').get(sessionChecker,(req,res)=>{
 
 app.get('/media',(req,res)=>{
     if(req.session.user && req.cookies.user_sid){
-        vlcObj.library(playlistObj=>{
+        vlcObj.library((playlistObj)=>{
+            global.library = playlistObj[1].children;
             res.render('media.html',{songs: playlistObj,  user: req.session.user});
         });
     }else{
@@ -108,7 +109,9 @@ app.get('/logout', (req, res) => {
 });
 
 app.route('/addToQueue').get((req, res) => {
-    vlcObj.add(req.query.uri,()=>{
+    let song = global.library.find(song=>song.id === req.query.id);
+    console.log(song.uri);
+    vlcObj.add(song.uri,()=>{
         setTimeout(()=>{
             res.redirect('/media');
         },1000)
