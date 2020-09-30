@@ -14,22 +14,26 @@ var bodyParser = require('body-parser');
 const { request } = require("http");
 const { render } = require("ejs");
 
-var currentSong = "";
+var currentSong;
 
 setInterval(()=>{
     vlcObj.library(playlistObj=>{
-        if(playlistObj[0].children.length > 0){
+        if(playlistObj[0].children.length > 1){
             playlistObj[0].children.forEach(element => {
-                if(element.hasOwnProperty('current')){
-                    if(element.name !== currentSong){
 
-                        currentSong = element.name;
+                if(element.hasOwnProperty('current')){
+                    if(typeof currentSong === 'undefined')
+                        currentSong = element;
+                    if(element.name !== currentSong.name){
+                        vlcObj.remove(currentSong.id,()=>{});
+                        currentSong = element;
                         console.log(currentSong);
                         mediaNamespace.emit('new song on', {currentSong: currentSong});
                     }
                 }
             });
-        }
+        }else
+            vlcObj.shuffleSong();
     });
 },1000);
 

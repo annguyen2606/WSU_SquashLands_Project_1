@@ -88,7 +88,7 @@
    const socket = io('http://localhost:5000/mediaNameSpace');
 
    socket.on('new song on', payload=>{
-      $('#currentSong').text(payload.currentSong);
+      $('#currentSong').text(payload.currentSong.name);
    });
  </script>
 

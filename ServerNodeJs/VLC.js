@@ -23,14 +23,9 @@ module.exports = class VLCApp{
             `${this.password}`
         ]);
         this.queueSize = 5;
-        let shuffle = function (array) {
-            for (let i = array.length - 1; i > 0; i--) {
-              let j = Math.floor(Math.random() * (i + 1));
-              [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
 
         this.vlcClient = new VLC({host: this.host, password: this.password, username:""});
+        this.shuffleSong();
     }
 
     library(callBack){     
@@ -67,5 +62,25 @@ module.exports = class VLCApp{
         })
         request.end();
         callBack();
+    }
+
+    shuffleSong(){
+        let shuffle = function (array) {
+            for (let i = array.length - 1; i > 0; i--) {
+              let j = Math.floor(Math.random() * (i + 1));
+              [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        this.library(media=>{
+            let lib = media[1].children;
+            shuffle(lib);
+            for(let i =0; i <= this.queueSize -1;i++){
+                if(i==this.queueSize -1)
+                    this.add(lib[i].uri,function(){});
+                else
+                    this.addAndPlay(lib[i].uri,function(){});
+            }
+        });
     }
 }
