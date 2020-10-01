@@ -90,6 +90,19 @@
    socket.on('new song on', payload=>{
       $('#currentSong').text(payload.currentSong.name);
    });
+
+   function play(){
+      socket.emit('web media request play');
+      console.log("play this");
+   }
+
+   function pause(){
+      socket.emit('web media request pause');
+   }
+
+   function next(){
+      socket.emit('web media request next');
+   }
  </script>
 
   <script type="text/javascript">
@@ -125,25 +138,6 @@
     }
 
     setTimeout(timeout,20*60000);
-
-    function fetchCurrentSong() {
-
-      $.ajax({
-
-        url:'/CurrentSong',
-        type:'get',
-        success: function(response){
-          if($('#currentSong').is(':visible')) {
-
-            $('#currentSong').text(response);
-
-          }
-          
-        }
-
-      });
-
-    }
 
 
     function fetchQueue() {
@@ -244,7 +238,7 @@
   	    			<p><%- song.name %></p>
   	    	</div>
   	    	<div class="col-sm-6">
-  	    				<button type="button" class="btn btn-info" onclick="location.href='/addToQueue?id=<%- song.id %>'">
+  	    				<button type="button" class="btn btn-info" onclick="location.href='/addToQueue?id=<%- song.id %>&queuer=<%- user%>'">
   	    					<span>Add to Queue</span>
   	    				</button>
   	    	</div>
@@ -299,13 +293,13 @@
       </span>
     </div>
     <div class="col-sm-6 text-center">
-    	<button type="button" class="btn btn-info" id="play">
+    	<button type="button" class="btn btn-info" id="play" onclick="play()">
     		<span class="glyphicon glyphicon-play"></span>
     	</button>
-    	<button type="button" class="btn btn-info"  id="pause">
+    	<button type="button" class="btn btn-info"  id="pause" onclick="pause()">
     		<span class="glyphicon glyphicon-pause"></span>
     	</button>
-    	<button type="button" class="btn btn-info"  id="next"">
+    	<button type="button" class="btn btn-info"  id="next" onclick="next()">
     		<span class="glyphicon glyphicon-step-forward"></span>
     	</button>
     </div>

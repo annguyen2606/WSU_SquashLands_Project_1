@@ -43,7 +43,6 @@ module.exports = class VLCApp{
     }
 
     add(uri, callBack){
-        console.log(typeof uri);
         this.vlcClient.addToQueue(uri);
         callBack();
     }
@@ -83,4 +82,16 @@ module.exports = class VLCApp{
             }
         });
     }
+
+    play(){
+        this.vlcClient.play(null);
+    }
+
+    pause(){
+        this.vlcClient.pause(null);
+    }
+
+    next(){
+        this.vlcClient.playlistNext();
+    } 
 }

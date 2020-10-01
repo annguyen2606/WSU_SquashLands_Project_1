@@ -8,6 +8,7 @@ const { VLC } = require('node-vlc-http');
 const { Console } = require("console");
 var cookieParser = require('cookie-parser');
 const Staff = require("./Models/Staff");
+const QueuedSong = require("./Models/QueueSong");
 const Request = require("./Models/Request");
 const QueueSong = require("./Models/QueueSong");
 var bodyParser = require('body-parser');
@@ -41,7 +42,19 @@ const mediaNamespace = io.of('/mediaNameSpace');
 
 mediaNamespace.on('connection', socket => {
     console.log('client connected to media namespace');
+    socket.on('web media request play',()=>{
+        vlcObj.pause();
+    });
+    
+    socket.on('web media request pause',()=>{
+        vlcObj.pause();
+    });
+    
+    socket.on('web media request next',()=>{
+        vlcObj.next();
+    });
 });
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const vlcObj = new VLCApp('localhost',8080,'test');
@@ -114,10 +127,12 @@ app.get('/logout', (req, res) => {
 
 app.route('/addToQueue').get((req, res) => {
     let song = global.library.find(song=>song.id === req.query.id);
-    console.log(song.uri);
     vlcObj.add(song.uri,()=>{
         setTimeout(()=>{
             res.redirect('/media');
+            QueuedSong.create({Song_Name: song.name, Queuer: req.query.queuer}).then(()=>{
+                console.log(`${req.query.queuer} Added song "${song.name}"`);
+            });
         },1000)
     });
 });
