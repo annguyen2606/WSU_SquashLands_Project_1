@@ -21,7 +21,7 @@
     "express-session": "^1.17.1",
     "http-auth": "^4.1.2",
     "node-vlc-http": "^1.1.0",
-    "pug": "^3.0.0",
+    "pug": "^3.0.1",
     "request": "^2.88.2",
     "sequelize": "^6.3.5",
     "socket.io": "^2.3.0",
