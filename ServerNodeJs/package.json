@@ -25,7 +25,7 @@
     "request": "^2.88.2",
     "sequelize": "^6.3.5",
     "socket.io": "^2.3.0",
-    "sqlite3": "^5.0.0",
+    "sqlite3": "^5.0.3",
     "vlc-client": "^1.0.6",
     "vlc-control-node": "0.0.7"
   },
